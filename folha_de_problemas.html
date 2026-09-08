@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Folha de Problemas — Matemática 7º ano</title>
+<style>
+  :root{
+    --azul:#1f4e79;
+    --azul-claro:#eaf2fb;
+    --verde:#2e7d32;
+    --verde-fundo:#d6f5d6;
+    --vermelho:#c62828;
+    --vermelho-fundo:#fbdcdc;
+    --cinza:#555;
+    --borda:#c9d4e0;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI", Arial, sans-serif; color:#222; background:#f4f6f9; margin:0; padding:60px 24px 24px; line-height:1.5;}
+  .folha{max-width:820px; margin:0 auto; background:#fff; border:1px solid var(--borda); border-radius:10px; padding:28px 34px 40px; box-shadow:0 2px 10px rgba(0,0,0,.06);}
+  body.rel-off .folha{filter:blur(7px); pointer-events:none; user-select:none;}
+  header h1{color:var(--azul); font-size:26px; margin:0 0 4px;}
+  .sub{color:var(--cinza); font-size:15px; margin:0 0 6px;}
+  .aviso{background:var(--azul-claro); border-left:5px solid var(--azul); padding:10px 14px; border-radius:6px; font-size:15px; margin:14px 0 8px;}
+  .linha-nome{display:flex; gap:24px; flex-wrap:wrap; font-size:15px; margin:14px 0 22px; color:var(--cinza);}
+  .linha-nome span{border-bottom:1px solid #999; min-width:200px; display:inline-block;}
+  .problema{border:1px solid var(--borda); border-radius:10px; padding:18px 20px; margin:0 0 22px; background:#fff; page-break-inside:avoid;}
+  .problema h2{font-size:17px; color:var(--azul); margin:0 0 4px;}
+  .tag-cap{font-size:12px; color:#fff; background:var(--azul); border-radius:12px; padding:2px 10px; display:inline-block; margin:0 0 8px;}
+  .enunciado{font-size:16px; margin:0 0 12px;}
+  .alternativas{list-style:none; padding:0; margin:0;}
+  .alternativas li{margin:6px 0;}
+  .alternativas label{display:flex; align-items:center; gap:10px; padding:9px 12px; border:1px solid var(--borda); border-radius:8px; cursor:pointer; font-size:16px; transition:background .15s;}
+  .alternativas label:hover{background:#f0f5fb;}
+  .alternativas input{width:18px; height:18px; cursor:pointer;}
+  .letra{font-weight:bold; color:var(--azul); min-width:20px;}
+  .box-calc{margin-top:14px; border:1px dashed #9aa8b6; border-radius:8px; padding:10px 12px; background:#fbfcfe;}
+  .box-calc .tit{font-size:13px; font-weight:bold; color:var(--cinza); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;}
+  .box-calc .linhas{min-height:80px; background:repeating-linear-gradient(#fbfcfe 0 27px, #d8e0e8 27px 28px);}
+  label.certa{background:var(--verde-fundo)!important; border-color:var(--verde)!important;}
+  label.certa .letra{color:var(--verde);}
+  label.errada{background:var(--vermelho-fundo)!important; border-color:var(--vermelho)!important;}
+  label.errada .letra{color:var(--vermelho);}
+  .tag{margin-left:auto; font-size:13px; font-weight:bold; padding:2px 10px; border-radius:20px;}
+  .tag.ok{background:var(--verde); color:#fff;}
+  .tag.x{background:var(--vermelho); color:#fff;}
+  .rodape{margin-top:10px; text-align:center;}
+  button#verBtn{font-size:17px; padding:12px 26px; border:none; border-radius:8px; background:var(--azul); color:#fff; cursor:pointer;}
+  button#verBtn:disabled{background:#b7c2ce; cursor:not-allowed;}
+  #status{font-size:14px; color:var(--cinza); margin-top:8px;}
+  #placar{display:none; margin-top:18px; text-align:center; font-size:22px; font-weight:bold; color:var(--azul); background:var(--azul-claro); border-radius:10px; padding:16px;}
+  .btn-imprimir{background:transparent; border:1px solid var(--azul); color:var(--azul); border-radius:8px; padding:8px 14px; cursor:pointer; font-size:14px; float:right;}
+  .salvamento{background:#eef3f9; border:1px solid var(--borda); border-radius:8px; padding:8px 12px; font-size:12.5px; color:var(--cinza);
+    display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:14px 0;}
+  .salvamento .info{flex:1; min-width:160px;}
+  .salvamento button{background:transparent; border:1px solid var(--borda); color:#334; padding:5px 9px; border-radius:6px; cursor:pointer; font-size:12px;}
+  .salvamento button:hover{border-color:var(--azul); color:var(--azul);}
+
+  /* ===== RELÓGIO DE ESTUDO ===== */
+  .rel-topo{
+    position:fixed; top:0; left:0; right:0; z-index:60;
+    background:#10314f; color:#eaf4fb; border-bottom:1px solid #1d4b74;
+    display:flex; align-items:center; gap:10px; padding:8px 14px; font-size:14px;
+  }
+  .rel-topo #relTempo{font-family:"Consolas",monospace; font-weight:bold; color:#4cc9f0; font-size:16px;}
+  .rel-topo .rel-info{color:#9fbdd6; font-size:12px; flex:1;}
+  .rel-btn{background:transparent; border:1px solid #1d4b74; color:#9fbdd6;
+    padding:5px 10px; border-radius:8px; cursor:pointer; font-size:12px;}
+  .rel-btn:hover{border-color:#ff6b6b; color:#ff6b6b;}
+  .rel-overlay{position:fixed; inset:0; background:rgba(10,26,43,.85); display:none;
+    align-items:center; justify-content:center; z-index:70; padding:20px;}
+  .rel-overlay.on{display:flex;}
+  .rel-modal{background:#fff; border:2px solid var(--azul); border-radius:16px;
+    padding:30px 26px; max-width:420px; text-align:center; color:#222;}
+  .rel-modal h2{margin:8px 0; color:var(--azul);}
+  .rel-modal p{color:var(--cinza); font-size:15px;}
+  .rel-modal .grande{font-size:46px;}
+  .rel-modal .conta{font-family:"Consolas",monospace; font-size:38px; color:var(--azul); font-weight:bold;}
+  .rel-modal .btnp{font-size:16px; padding:12px 24px; border:none; border-radius:8px; background:var(--azul); color:#fff; cursor:pointer; margin:6px; font-weight:bold;}
+  .rel-modal .btnp.cinza{background:#8aa0b8;}
+
+  .modal-fundo{position:fixed; inset:0; background:rgba(10,26,43,.6); display:none; align-items:center; justify-content:center; z-index:50;}
+  .modal-fundo.on{display:flex;}
+  .modal{background:#fff; border:2px solid var(--azul); border-radius:12px; padding:22px; max-width:340px; text-align:center;}
+  .modal p{margin:0 0 16px;}
+  .modal button{font-size:15px; padding:10px 20px; border:none; border-radius:8px; background:var(--azul); color:#fff; cursor:pointer; margin:0 6px;}
+  .modal button.cinza{background:#8aa0b8;}
+
+  @media print{
+    body{background:#fff; padding:0;}
+    .folha{border:none; box-shadow:none; max-width:100%;}
+    body.rel-off .folha{filter:none;}
+    .rodape, #placar, .btn-imprimir, .rel-topo, .rel-overlay, .salvamento, .modal-fundo{display:none!important;}
+    .box-calc .linhas{min-height:90px;}
+  }
+</style>
+</head>
+<body class="rel-off">
+
+<!-- ===== RELÓGIO DE ESTUDO ===== -->
+<div class="rel-topo" id="relTopo">
+  <span>⏱️</span><span id="relTempo">0:00</span>
+  <span class="rel-info" id="relInfo">clique em "Começar a estudar"</span>
+  <button class="rel-btn" id="relTerminar">⏹ Terminar agora</button>
+</div>
+<div class="rel-overlay on" id="relInicio">
+  <div class="rel-modal">
+    <div class="grande">⏱️</div>
+    <h2>Hora de treinar, jovem aprendiz!</h2>
+    <p>O relógio de estudo registra quanto tempo você treinou. Sessões de <b>45 minutos</b> com pausa obrigatória de 5. (Para imprimir a folha, é só usar Ctrl+P — a impressão sai limpa.)</p>
+    <button class="btnp" id="relComecar">▶️ Começar a estudar</button>
+  </div>
+</div>
+<div class="rel-overlay" id="relPausa">
+  <div class="rel-modal">
+    <div class="grande">😴</div>
+    <h2>Estudo pausado</h2>
+    <p>Percebi que você parou um pouquinho. O relógio pausou sozinho.<br><b>Toque em qualquer lugar para continuar.</b></p>
+  </div>
+</div>
+<div class="rel-overlay" id="relTrava">
+  <div class="rel-modal">
+    <div class="grande">🧃</div>
+    <h2>Pausa obrigatória!</h2>
+    <p>Você estudou 45 minutos seguidos — muito bem! Levante, beba água e estique as pernas. A folha volta sozinha em:</p>
+    <div class="conta" id="relTravaConta">5:00</div>
+    <p style="font-size:13px">Suas marcações estão salvas. 😉</p>
+  </div>
+</div>
+<div class="rel-overlay" id="relConfirma">
+  <div class="rel-modal">
+    <div class="grande">⏹</div>
+    <h2>Terminar agora?</h2>
+    <p>O relógio de estudo será encerrado e o tempo registrado. Tem certeza?</p>
+    <button class="btnp" id="relConfirmaSim">Sim, terminar</button>
+    <button class="btnp cinza" id="relConfirmaNao">Continuar</button>
+  </div>
+</div>
+<div class="rel-overlay" id="relFim">
+  <div class="rel-modal">
+    <div class="grande">🏁</div>
+    <h2>Treino encerrado</h2>
+    <p id="relFimResumo"></p>
+    <button class="btnp" id="relDeNovo">▶️ Estudar de novo</button>
+  </div>
+</div>
+
+<div class="folha">
+  <header>
+    <button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir</button>
+    <h1>Folha de Problemas — Matemática 7º ano</h1>
+    <p class="sub">Colégio Coração Feliz • Avaliação Mensal 1 (10/09/2026)</p>
+    <p class="sub">Conteúdo: Volume (cap. 9) • Expressões algébricas (cap. 10) • Equações do 1º grau (cap. 12)</p>
+    <div class="aviso">✏️ <strong>Resolva mostrando os cálculos</strong> no espaço de cada problema (ou no caderno) e <strong>mostre para seus pais</strong>. Depois marque a letra da resposta nos 5 problemas.</div>
+    <div class="linha-nome">
+      <div>Nome: <span></span></div>
+      <div>Data: <span></span></div>
+    </div>
+  </header>
+
+  <div class="salvamento">
+    <span class="info" id="infoSalvo">💾 Suas marcações são salvas automaticamente neste computador.</span>
+    <button id="btnExport">📥 Exportar</button>
+    <button id="btnImport">📤 Importar</button>
+    <button id="btnZerar">🗑️ Zerar tudo</button>
+    <input type="file" id="fileImport" accept="application/json" style="display:none">
+  </div>
+
+  <!-- PROBLEMA 1 — Cap 9: volume do paralelepípedo (2×1,5×1 = 3) -->
+  <div class="problema" data-correta="B">
+    <span class="tag-cap">Cap. 9 — Volume</span>
+    <h2>Problema 1</h2>
+    <p class="enunciado">Seu Antônio vai encher com areia uma caixa em formato de paralelepípedo que mede <strong>2 m</strong> de comprimento, <strong>1,5 m</strong> de largura e <strong>1 m</strong> de altura. Qual é o volume de areia que cabe na caixa quando ela está cheia?</p>
+    <ul class="alternativas">
+      <li><label><input type="radio" name="q1" value="A"><span class="letra">A)</span> 4,5 m³</label></li>
+      <li><label><input type="radio" name="q1" value="B"><span class="letra">B)</span> 3 m³</label></li>
+      <li><label><input type="radio" name="q1" value="C"><span class="letra">C)</span> 3,5 m³</label></li>
+      <li><label><input type="radio" name="q1" value="D"><span class="letra">D)</span> 6 m³</label></li>
+    </ul>
+    <div class="box-calc"><div class="tit">Mostre os cálculos</div><div class="linhas"></div></div>
+  </div>
+
+  <!-- PROBLEMA 2 — Cap 9: volume -> litros (5×3×2 = 30 m³ = 30000 L) -->
+  <div class="problema" data-correta="C">
+    <span class="tag-cap">Cap. 9 — Volume e capacidade</span>
+    <h2>Problema 2</h2>
+    <p class="enunciado">Uma piscina em formato de caixa tem <strong>5 m</strong> de comprimento, <strong>3 m</strong> de largura e <strong>2 m</strong> de profundidade. Quantos <strong>litros</strong> de água são necessários para enchê-la completamente? (Lembre: 1 m³ = 1000 L.)</p>
+    <ul class="alternativas">
+      <li><label><input type="radio" name="q2" value="A"><span class="letra">A)</span> 300 litros</label></li>
+      <li><label><input type="radio" name="q2" value="B"><span class="letra">B)</span> 3 000 litros</label></li>
+      <li><label><input type="radio" name="q2" value="C"><span class="letra">C)</span> 30 000 litros</label></li>
+      <li><label><input type="radio" name="q2" value="D"><span class="letra">D)</span> 30 litros</label></li>
+    </ul>
+    <div class="box-calc"><div class="tit">Mostre os cálculos</div><div class="linhas"></div></div>
+  </div>
+
+  <!-- PROBLEMA 3 — Cap 10: valor numérico (3x+20, x=15 -> 65) -->
+  <div class="problema" data-correta="A">
+    <span class="tag-cap">Cap. 10 — Expressões algébricas</span>
+    <h2>Problema 3</h2>
+    <p class="enunciado">Numa papelaria, o preço de um caderno é representado por <strong>x</strong> reais. Uma mochila custa o <strong>triplo</strong> do caderno mais <strong>R$ 20,00</strong>, ou seja, a mochila custa <strong>3x + 20</strong>. Se o caderno custa <strong>R$ 15,00</strong>, quanto custa a mochila?</p>
+    <ul class="alternativas">
+      <li><label><input type="radio" name="q3" value="A"><span class="letra">A)</span> R$ 65,00</label></li>
+      <li><label><input type="radio" name="q3" value="B"><span class="letra">B)</span> R$ 55,00</label></li>
+      <li><label><input type="radio" name="q3" value="C"><span class="letra">C)</span> R$ 45,00</label></li>
+      <li><label><input type="radio" name="q3" value="D"><span class="letra">D)</span> R$ 50,00</label></li>
+    </ul>
+    <div class="box-calc"><div class="tit">Mostre os cálculos</div><div class="linhas"></div></div>
+  </div>
+
+  <!-- PROBLEMA 4 — Cap 12: equação (5x+8=43 -> 7) -->
+  <div class="problema" data-correta="B">
+    <span class="tag-cap">Cap. 12 — Equação do 1º grau</span>
+    <h2>Problema 4</h2>
+    <p class="enunciado">Pedro pensou em um número, <strong>multiplicou por 5</strong> e depois <strong>somou 8</strong>, obtendo <strong>43</strong> como resultado. Que número Pedro pensou? (Monte a equação e resolva.)</p>
+    <ul class="alternativas">
+      <li><label><input type="radio" name="q4" value="A"><span class="letra">A)</span> 9</label></li>
+      <li><label><input type="radio" name="q4" value="B"><span class="letra">B)</span> 7</label></li>
+      <li><label><input type="radio" name="q4" value="C"><span class="letra">C)</span> 35</label></li>
+      <li><label><input type="radio" name="q4" value="D"><span class="letra">D)</span> 10</label></li>
+    </ul>
+    <div class="box-calc"><div class="tit">Mostre os cálculos</div><div class="linhas"></div></div>
+  </div>
+
+  <!-- PROBLEMA 5 — Cap 12: equação com taxa fixa (40+25x=165 -> 5) -->
+  <div class="problema" data-correta="D">
+    <span class="tag-cap">Cap. 12 — Equação do 1º grau</span>
+    <h2>Problema 5</h2>
+    <p class="enunciado">Uma oficina cobra <strong>R$ 40,00</strong> de taxa fixa mais <strong>R$ 25,00</strong> por hora de serviço. O conserto de um carro custou <strong>R$ 165,00</strong>. Quantas horas o mecânico trabalhou nesse carro?</p>
+    <ul class="alternativas">
+      <li><label><input type="radio" name="q5" value="A"><span class="letra">A)</span> 8 horas</label></li>
+      <li><label><input type="radio" name="q5" value="B"><span class="letra">B)</span> 6 horas</label></li>
+      <li><label><input type="radio" name="q5" value="C"><span class="letra">C)</span> 4 horas</label></li>
+      <li><label><input type="radio" name="q5" value="D"><span class="letra">D)</span> 5 horas</label></li>
+    </ul>
+    <div class="box-calc"><div class="tit">Mostre os cálculos</div><div class="linhas"></div></div>
+  </div>
+
+  <div class="rodape">
+    <button id="verBtn" disabled>Ver resultado</button>
+    <div id="status">Marque uma resposta em cada um dos 5 problemas para liberar o botão.</div>
+  </div>
+
+  <div id="placar"></div>
+</div>
+
+<div class="modal-fundo" id="modalFundo">
+  <div class="modal">
+    <p id="modalTxt"></p>
+    <div>
+      <button id="modalOk">Sim</button>
+      <button class="cinza" id="modalCancel">Não</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ====== ESTADO / SALVAMENTO ====== */
+  var CHAVE = "mat7_prova1009_folha_v1";
+  var memoria = {};
+  var estado = { resp:{}, revelado:false, acertos:0 };
+  function lerArmazenado(){
+    try{ var s=localStorage.getItem(CHAVE); return s?JSON.parse(s):null; }
+    catch(e){ return memoria[CHAVE]?JSON.parse(memoria[CHAVE]):null; }
+  }
+  function salvar(){
+    estado.data = new Date().toLocaleString('pt-BR');
+    var t = JSON.stringify(estado);
+    try{ localStorage.setItem(CHAVE, t); }catch(e){ memoria[CHAVE]=t; }
+    document.getElementById('infoSalvo').textContent = "💾 Último salvamento: "+estado.data;
+  }
+
+  var problemas = document.querySelectorAll('.problema');
+  var total = problemas.length; // 5
+  var verBtn = document.getElementById('verBtn');
+  var statusEl = document.getElementById('status');
+  var placar = document.getElementById('placar');
+
+  function contarRespondidos(){
+    var r=0;
+    for(var i=1;i<=total;i++){ if(document.querySelector('input[name="q'+i+'"]:checked')) r++; }
+    return r;
+  }
+  function atualizarBotao(){
+    if(estado.revelado) return;
+    var r=contarRespondidos();
+    if(r===total){ verBtn.disabled=false; statusEl.textContent='Tudo marcado! Pode clicar em "Ver resultado".'; }
+    else{ verBtn.disabled=true; statusEl.textContent='Você marcou '+r+' de '+total+'. Marque todas para liberar o botão.'; }
+  }
+  document.querySelectorAll('input[type="radio"]').forEach(function(inp){
+    inp.addEventListener('change', function(){
+      estado.resp[inp.name] = inp.value;
+      salvar();
+      atualizarBotao();
+    });
+  });
+
+  function revelar(){
+    estado.revelado = true;
+    var acertos=0;
+    problemas.forEach(function(prob){
+      var correta=prob.getAttribute('data-correta');
+      var marcada=prob.querySelector('input:checked');
+      var marcadaVal=marcada?marcada.value:null;
+      prob.querySelectorAll('input[type="radio"]').forEach(function(i){ i.disabled=true; });
+      prob.querySelectorAll('label').forEach(function(lab){
+        var val=lab.querySelector('input').value;
+        if(val===correta && !lab.querySelector('.tag')){ lab.classList.add('certa'); var t=document.createElement('span'); t.className='tag ok'; t.textContent='Correta'; lab.appendChild(t); }
+        if(marcadaVal!==correta && val===marcadaVal && !lab.classList.contains('errada')){ lab.classList.add('errada'); var tx=document.createElement('span'); tx.className='tag x'; tx.textContent='Você marcou'; lab.appendChild(tx); }
+      });
+      if(marcadaVal===correta) acertos++;
+    });
+    estado.acertos = acertos;
+    salvar();
+    placar.style.display='block';
+    placar.textContent='Você acertou '+acertos+' de '+total+'.';
+    verBtn.disabled=true; verBtn.textContent='Resultado exibido';
+    statusEl.style.display='none';
+  }
+
+  verBtn.addEventListener('click', function(){
+    if(verBtn.disabled) return;
+    revelar();
+    placar.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  /* restaurar estado salvo */
+  (function(){
+    var salvo = lerArmazenado();
+    if(!salvo) return;
+    estado = salvo;
+    if(!estado.resp) estado.resp = {};
+    for(var nome in estado.resp){
+      var inp = document.querySelector('input[name="'+nome+'"][value="'+estado.resp[nome]+'"]');
+      if(inp) inp.checked = true;
+    }
+    if(estado.data) document.getElementById('infoSalvo').textContent = "💾 Último salvamento: "+estado.data;
+    if(estado.revelado) revelar();
+    else atualizarBotao();
+  })();
+
+/* ====== RELÓGIO DE ESTUDO (regra 2026-09-07) ====== */
+var RELOGIO = (function(){
+  var KEY_T = CHAVE + "_tempo";
+  var SESSAO = 45*60, TRAVA = 5*60, INATIVO = 3*60;
+  var memT = {};
+  function lerT(){ try{ var s=localStorage.getItem(KEY_T); return s?JSON.parse(s):null; }catch(e){ return memT.v? JSON.parse(memT.v):null; } }
+  var st = lerT() || { total:0, ativo:0, sessoes:[] };
+  if(!st.sessoes) st.sessoes=[];
+  var ligado=false, inativo=false, trava=false;
+  var sessAtivo=0, travaResta=0, ultAtiv=Date.now(), tick=null, salvaCada=0;
+
+  function gravarT(){ var t=JSON.stringify(st); try{ localStorage.setItem(KEY_T, t); }catch(e){ memT.v=t; } }
+  function fmt(s){ s=Math.max(0,Math.floor(s)); return Math.floor(s/60)+":"+("0"+(s%60)).slice(-2); }
+  function mostra(id,on){ var e=document.getElementById(id); if(e) e.classList.toggle('on', !!on); }
+  function renderRel(){
+    var t=document.getElementById('relTempo'); if(t) t.textContent=fmt(st.ativo);
+    var i=document.getElementById('relInfo');
+    if(i) i.textContent = trava? "pausa obrigatória — descanse!" : inativo? "pausado (toque para continuar)" : ligado? ("sessão: faltam "+fmt(SESSAO-sessAtivo)) : 'clique em "Começar a estudar"';
+  }
+  function atividade(){
+    if(!ligado || trava) return;
+    ultAtiv = Date.now();
+    if(inativo){ inativo=false; mostra('relPausa', false); renderRel(); }
+  }
+  function passo(){
+    if(!ligado) return;
+    st.total++;
+    if(trava){
+      travaResta--;
+      var e=document.getElementById('relTravaConta'); if(e) e.textContent=fmt(travaResta);
+      if(travaResta<=0){ trava=false; sessAtivo=0; mostra('relTrava', false); novaSessao(); }
+    } else if(!inativo){
+      if(Date.now()-ultAtiv > INATIVO*1000){ inativo=true; mostra('relPausa', true); }
+      else{
+        st.ativo++; sessAtivo++;
+        if(sessAtivo>=SESSAO){ trava=true; travaResta=TRAVA; mostra('relTrava', true); }
+      }
+    }
+    salvaCada++; if(salvaCada>=5){ salvaCada=0; gravarT(); }
+    renderRel();
+  }
+  function novaSessao(){ st.sessoes.push({inicio:new Date().toISOString()}); gravarT(); }
+  function fechaSessao(botao){
+    var s=st.sessoes[st.sessoes.length-1];
+    if(s && !s.fim){ s.fim=new Date().toISOString(); if(botao) s.terminadaPeloBotao=true; }
+    gravarT();
+  }
+  function comecar(){
+    ligado=true; inativo=false; ultAtiv=Date.now(); sessAtivo=0;
+    document.body.classList.remove('rel-off');
+    mostra('relInicio', false); mostra('relFim', false);
+    novaSessao();
+    if(!tick) tick=setInterval(passo, 1000);
+    renderRel();
+  }
+  ['click','keydown','scroll','input','touchstart'].forEach(function(evt){
+    document.addEventListener(evt, atividade, true);
+  });
+  window.addEventListener('beforeunload', function(){ if(ligado) fechaSessao(false); gravarT(); });
+  document.getElementById('relComecar').addEventListener('click', comecar);
+  document.getElementById('relDeNovo').addEventListener('click', comecar);
+  document.getElementById('relTerminar').addEventListener('click', function(){ if(ligado && !trava) mostra('relConfirma', true); });
+  document.getElementById('relConfirmaNao').addEventListener('click', function(){ mostra('relConfirma', false); });
+  document.getElementById('relConfirmaSim').addEventListener('click', function(){
+    mostra('relConfirma', false);
+    ligado=false; fechaSessao(true); gravarT();
+    var r=document.getElementById('relFimResumo');
+    if(r) r.innerHTML = "Tempo ativo de treino: <b>"+fmt(st.ativo)+"</b> (total: "+fmt(st.total)+"). Muito bem! Seus pais podem ver o relatório na página inicial.";
+    document.body.classList.add('rel-off');
+    mostra('relFim', true);
+  });
+  renderRel();
+  return {
+    dados: function(){ return st; },
+    gravar: gravarT,
+    zerar: function(){ st={total:0,ativo:0,sessoes:[]}; try{ localStorage.removeItem(KEY_T); }catch(e){ delete memT.v; } gravarT(); renderRel(); },
+    importar: function(d){ if(d){ st=d; if(!st.sessoes)st.sessoes=[]; gravarT(); renderRel(); } },
+    _debug: function(o){
+      o=o||{};
+      if(o.restante!=null) sessAtivo = SESSAO - o.restante;
+      if(o.trava!=null){ trava=true; travaResta=o.trava; mostra('relTrava', true); }
+      if(o.inativo!=null) ultAtiv = Date.now() - o.inativo*1000;
+      renderRel();
+    }
+  };
+})();
+
+/* ====== EXPORTAR / IMPORTAR / ZERAR ====== */
+document.getElementById('btnExport').addEventListener('click', function(){
+  var pacote = { material:"folha", dados:estado, tempo:RELOGIO.dados() };
+  var blob = new Blob([JSON.stringify(pacote,null,2)], {type:"application/json"});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = "folha_matematica_7ano.json";
+  a.click();
+});
+document.getElementById('btnImport').addEventListener('click', function(){ document.getElementById('fileImport').click(); });
+document.getElementById('fileImport').addEventListener('change', function(e){
+  var f = e.target.files[0]; if(!f) return;
+  var r = new FileReader();
+  r.onload = function(){
+    try{
+      var d = JSON.parse(r.result);
+      if(d && d.dados){ estado=d.dados; if(d.tempo) RELOGIO.importar(d.tempo); }
+      else { estado=d; }
+      if(!estado.resp) estado.resp={};
+      salvar(); location.reload();
+    }
+    catch(err){ mostrarModalInfo("Não consegui ler esse arquivo."); }
+  };
+  r.readAsText(f);
+});
+var modalFundo = document.getElementById('modalFundo');
+document.getElementById('btnZerar').addEventListener('click', function(){
+  document.getElementById('modalTxt').textContent = "Tem certeza que quer apagar as marcações e o tempo de estudo desta folha?";
+  document.getElementById('modalOk').style.display="inline-block";
+  document.getElementById('modalCancel').textContent="Não";
+  modalFundo.classList.add('on');
+  document.getElementById('modalOk').onclick = function(){
+    estado = { resp:{}, revelado:false, acertos:0 };
+    try{ localStorage.removeItem(CHAVE);}catch(e){ delete memoria[CHAVE]; }
+    RELOGIO.zerar();
+    modalFundo.classList.remove('on');
+    location.reload();
+  };
+});
+document.getElementById('modalCancel').addEventListener('click', function(){ modalFundo.classList.remove('on'); });
+function mostrarModalInfo(txt){
+  document.getElementById('modalTxt').textContent = txt;
+  document.getElementById('modalOk').style.display="none";
+  document.getElementById('modalCancel').textContent="Fechar";
+  modalFundo.classList.add('on');
+}
+</script>
+</body>
+</html>
