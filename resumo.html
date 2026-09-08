@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resumo — Matemática 7º ano | Central de Engenharia</title>
+<style>
+  :root{
+    --bg:#0b1f33; --bg2:#0e2740; --painel:#10314f; --linha:#1d4b74;
+    --ciano:#4cc9f0; --ciano-forte:#20b6e6; --branco:#eaf4fb; --cinza:#9fbdd6;
+    --verde:#37d67a; --vermelho:#ff6b6b; --amarelo:#ffd23f; --laranja:#ff9f45;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:0; font-family:"Segoe UI",Arial,sans-serif; color:var(--branco);
+    background:
+      linear-gradient(rgba(11,31,51,.94),rgba(11,31,51,.97)),
+      repeating-linear-gradient(0deg, transparent 0 39px, rgba(76,201,240,.08) 39px 40px),
+      repeating-linear-gradient(90deg, transparent 0 39px, rgba(76,201,240,.08) 39px 40px),
+      var(--bg);
+    line-height:1.6;
+  }
+  .wrap{max-width:900px; margin:0 auto; padding:64px 16px 80px;}
+  body.rel-off .wrap{filter:blur(7px); pointer-events:none; user-select:none;}
+  header.topo{
+    text-align:center; padding:26px 18px; border:1.5px solid var(--linha); border-radius:16px;
+    background:linear-gradient(135deg,var(--bg2),var(--painel)); margin-bottom:18px;
+  }
+  header.topo .selo{display:inline-block; font-size:13px; letter-spacing:2px; color:var(--ciano);
+    border:1px solid var(--ciano); padding:3px 12px; border-radius:20px; margin-bottom:10px; text-transform:uppercase;}
+  header.topo h1{margin:6px 0 4px; font-size:26px; color:#fff;}
+  header.topo p{margin:0; color:var(--cinza); font-size:15px;}
+
+  .abas{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:18px;}
+  .abas button{background:var(--painel); border:1px solid var(--linha); color:var(--cinza);
+    padding:9px 16px; border-radius:22px; cursor:pointer; font-size:14px;}
+  .abas button.on{border-color:var(--ciano); color:var(--ciano); background:rgba(76,201,240,.1);}
+
+  .capitulo{display:none;}
+  .capitulo.on{display:block; animation:fade .3s;}
+  @keyframes fade{from{opacity:0; transform:translateY(6px);}to{opacity:1;}}
+  .cap-titulo{font-size:20px; color:var(--ciano); border-left:4px solid var(--ciano); padding-left:12px; margin:6px 0 16px;}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px;}
+  .card{background:linear-gradient(135deg,var(--bg2),var(--painel)); border:1px solid var(--linha);
+    border-radius:14px; padding:16px 18px;}
+  .card h3{margin:0 0 8px; font-size:16px; color:#fff; display:flex; align-items:center; gap:8px;}
+  .card .icone{font-size:20px;}
+  .card p{margin:6px 0; font-size:15px;}
+  .formula{display:inline-block; background:#071b2e; border:1px solid var(--linha); border-radius:8px;
+    padding:2px 10px; font-family:"Consolas",monospace; color:var(--amarelo); font-weight:bold;}
+  .destaque{color:var(--ciano); font-weight:bold;}
+
+  .postit{background:#f7e07a; color:#3a2f00; border-radius:6px; padding:12px 14px; font-size:15px;
+    box-shadow:0 3px 8px rgba(0,0,0,.3); transform:rotate(-1deg); margin:4px 0;}
+  .postit b{color:#7a5b00;}
+
+  .peg{background:#3a1414; border-left:4px solid var(--vermelho); border-radius:10px; padding:12px 16px;}
+  .peg b{color:var(--vermelho);}
+
+  .flip-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px;}
+  .flip{background:transparent; perspective:1000px; height:150px; cursor:pointer;}
+  .flip-in{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;}
+  .flip.vira .flip-in{transform:rotateY(180deg);}
+  .flip-face{position:absolute; inset:0; backface-visibility:hidden; border-radius:14px; padding:16px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; border:1px solid var(--linha);}
+  .flip-frente{background:linear-gradient(135deg,var(--painel),var(--bg2)); color:#fff;}
+  .flip-frente .q{font-size:16px; font-weight:bold;}
+  .flip-frente .dica{font-size:12px; color:var(--cinza); margin-top:8px;}
+  .flip-verso{background:linear-gradient(135deg,#0f3a2a,#0e2740); color:var(--branco); transform:rotateY(180deg); font-size:15px;}
+  .flip-verso b{color:var(--verde);}
+
+  .glossario{background:linear-gradient(135deg,var(--bg2),var(--painel)); border:1px solid var(--linha);
+    border-radius:14px; padding:8px 18px; margin-top:8px;}
+  .glossario dt{color:var(--amarelo); font-weight:bold; margin-top:12px;}
+  .glossario dd{margin:2px 0 6px; color:var(--branco);}
+
+  .salvamento{background:var(--painel); border:1px solid var(--linha); border-radius:12px; padding:10px 14px;
+    font-size:13px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:22px;}
+  .salvamento .info{color:var(--cinza); flex:1; min-width:160px;}
+  .salvamento button{background:transparent; border:1px solid var(--linha); color:var(--branco);
+    padding:6px 10px; border-radius:8px; cursor:pointer; font-size:12px;}
+  .salvamento button:hover{border-color:var(--ciano); color:var(--ciano);}
+  .nav{margin-top:20px; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;}
+  .nav a{background:var(--ciano); color:#04283a; text-decoration:none; font-weight:bold; padding:12px 20px; border-radius:10px;}
+  .nav a.sec{background:transparent; color:var(--ciano); border:1px solid var(--ciano);}
+
+  .btn{
+    background:linear-gradient(135deg,var(--ciano),var(--ciano-forte));
+    color:#04283a; border:none; font-weight:bold; font-size:16px;
+    padding:12px 24px; border-radius:10px; cursor:pointer; margin-top:6px;
+  }
+  .btn.refazer{background:linear-gradient(135deg,var(--laranja),#ff7f2a); color:#3a1a00;}
+  .modal-fundo{position:fixed; inset:0; background:rgba(4,12,20,.75); display:none; align-items:center; justify-content:center; z-index:50;}
+  .modal-fundo.on{display:flex;}
+  .modal{background:var(--bg2); border:1.5px solid var(--ciano); border-radius:14px; padding:22px; max-width:340px; text-align:center;}
+  .modal p{margin:0 0 16px;}
+  .modal button{margin:0 6px;}
+
+  /* ===== RELÓGIO DE ESTUDO ===== */
+  .rel-topo{
+    position:fixed; top:0; left:0; right:0; z-index:60;
+    background:rgba(7,27,46,.96); border-bottom:1px solid var(--linha);
+    display:flex; align-items:center; gap:10px; padding:8px 14px; font-size:14px;
+  }
+  .rel-topo #relTempo{font-family:"Consolas",monospace; font-weight:bold; color:var(--ciano); font-size:16px;}
+  .rel-topo .rel-info{color:var(--cinza); font-size:12px; flex:1;}
+  .rel-btn{background:transparent; border:1px solid var(--linha); color:var(--cinza);
+    padding:5px 10px; border-radius:8px; cursor:pointer; font-size:12px;}
+  .rel-btn:hover{border-color:var(--vermelho); color:var(--vermelho);}
+  .rel-overlay{position:fixed; inset:0; background:rgba(4,12,20,.88); display:none;
+    align-items:center; justify-content:center; z-index:70; padding:20px;}
+  .rel-overlay.on{display:flex;}
+  .rel-modal{background:var(--bg2); border:1.5px solid var(--ciano); border-radius:16px;
+    padding:30px 26px; max-width:420px; text-align:center;}
+  .rel-modal h2{margin:8px 0; color:#fff;}
+  .rel-modal p{color:var(--cinza); font-size:15px;}
+  .rel-modal .grande{font-size:46px;}
+  .rel-modal .conta{font-family:"Consolas",monospace; font-size:38px; color:var(--amarelo); font-weight:bold;}
+</style>
+</head>
+<body class="rel-off">
+
+<!-- ===== RELÓGIO DE ESTUDO ===== -->
+<div class="rel-topo" id="relTopo">
+  <span>⏱️</span><span id="relTempo">0:00</span>
+  <span class="rel-info" id="relInfo">clique em "Começar a estudar"</span>
+  <button class="rel-btn" id="relTerminar">⏹ Terminar agora</button>
+</div>
+<div class="rel-overlay on" id="relInicio">
+  <div class="rel-modal">
+    <div class="grande">⏱️</div>
+    <h2>Hora de revisar, jovem aprendiz!</h2>
+    <p>O relógio de estudo registra quanto tempo você revisou de verdade. Sessões de <b>45 minutos</b> com pausa obrigatória de 5.</p>
+    <button class="btn" id="relComecar">▶️ Começar a estudar</button>
+  </div>
+</div>
+<div class="rel-overlay" id="relPausa">
+  <div class="rel-modal">
+    <div class="grande">😴</div>
+    <h2>Estudo pausado</h2>
+    <p>Percebi que você parou um pouquinho. O relógio pausou sozinho.<br><b>Toque em qualquer lugar para continuar.</b></p>
+  </div>
+</div>
+<div class="rel-overlay" id="relTrava">
+  <div class="rel-modal">
+    <div class="grande">🧃</div>
+    <h2>Pausa obrigatória!</h2>
+    <p>Você estudou 45 minutos seguidos — muito bem! Levante, beba água e estique as pernas. O material volta sozinho em:</p>
+    <div class="conta" id="relTravaConta">5:00</div>
+    <p style="font-size:13px">Seu progresso está salvo. 😉</p>
+  </div>
+</div>
+<div class="rel-overlay" id="relConfirma">
+  <div class="rel-modal">
+    <div class="grande">⏹</div>
+    <h2>Terminar agora?</h2>
+    <p>O relógio de estudo será encerrado e o tempo registrado. Tem certeza?</p>
+    <button class="btn" id="relConfirmaSim">Sim, terminar</button>
+    <button class="btn refazer" id="relConfirmaNao">Continuar estudando</button>
+  </div>
+</div>
+<div class="rel-overlay" id="relFim">
+  <div class="rel-modal">
+    <div class="grande">🏁</div>
+    <h2>Estudo encerrado</h2>
+    <p id="relFimResumo"></p>
+    <button class="btn" id="relDeNovo">▶️ Estudar de novo</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="topo">
+    <span class="selo">Central de Engenharia • Projeto Matemática</span>
+    <h1>🗺️ Resumo de Estudo</h1>
+    <p>7º ano — Coração Feliz • Avaliação Mensal 1 (10/09/2026)<br>Cap. 9 Volume • Cap. 10 Expressões algébricas • Cap. 12 Equações do 1º grau</p>
+  </header>
+
+  <div class="abas">
+    <button class="on" data-alvo="c9">📦 Cap. 9 — Volume</button>
+    <button data-alvo="c10">🔤 Cap. 10 — Expressões</button>
+    <button data-alvo="c12">⚖️ Cap. 12 — Equações</button>
+    <button data-alvo="glo">📖 Glossário</button>
+  </div>
+
+  <!-- ===== CAP 9 ===== -->
+  <section class="capitulo on" id="c9">
+    <h2 class="cap-titulo">📦 Capítulo 9 — Volume do cubo e do paralelepípedo</h2>
+    <div class="grid">
+      <div class="card">
+        <h3><span class="icone">🧊</span> O que é volume</h3>
+        <p>Volume é o espaço que um sólido ocupa. Medimos contando quantos <span class="destaque">cubinhos de 1 cm de aresta</span> cabem dentro dele. Cada cubinho = <span class="formula">1 cm³</span>.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icone">📐</span> Volume do cubo</h3>
+        <p>Todas as arestas iguais:</p>
+        <p><span class="formula">V = a × a × a = a³</span></p>
+        <p>Ex.: aresta 3 → 3×3×3 = <b>27 cm³</b>.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icone">📦</span> Volume do paralelepípedo</h3>
+        <p>É a caixa (dimensões diferentes):</p>
+        <p><span class="formula">V = comprimento × largura × altura</span></p>
+        <p>Ex.: 3×4×5 = <b>60</b>.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icone">💧</span> Volume vira litros</h3>
+        <p><span class="formula">1 m³ = 1000 L</span></p>
+        <p><span class="formula">1 dm³ = 1 L</span></p>
+        <p>Ex.: 90 m³ = <b>90 000 L</b>.</p>
+      </div>
+    </div>
+
+    <div style="margin:16px 0;">
+      <div class="postit"><b>Macete:</b> "cubo tem 3 dimensões iguais → elevado ao cubo (³)". Por isso a unidade é sempre <b>cúbica</b> (cm³, m³).</div>
+    </div>
+
+    <div class="peg">
+      <p><b>⚠️ Pegadinhas do Cap. 9</b></p>
+      <p>• Não confunda <b>área</b> (m²) com <b>volume</b> (m³).<br>
+         • a³ é a×a×a, <b>não</b> a×3.<br>
+         • A troca certa é 1 m³ = <b>1000 L</b> (não 100 L).</p>
+    </div>
+
+    <h3 style="color:var(--amarelo); margin-top:20px;">🃏 Cartas de treino (clique para virar)</h3>
+    <div class="flip-grid">
+      <div class="flip"><div class="flip-in">
+        <div class="flip-face flip-frente"><div class="q">Cubo de aresta 4 cm</div><div class="dica">clique para ver</div></div>
+        <div class="flip-face flip-verso"><b>4×4×4 = 64 cm³</b></div>
+      </div></div>
+      <div class="flip"><div class="flip-in">
+        <div class="flip-face flip-frente"><div class="q">Caixa 2 × 5 × 10</div><div class="dica">clique para ver</div></div>
+        <div class="flip-face flip-verso"><b>2×5×10 = 100</b></div>
+      </div></div>
+      <div class="flip"><div class="flip-in">
+        <div class="flip-face flip-frente"><div class="q">3 m³ em litros</div><div class="dica">clique para ver</div></div>
+        <div class="flip-face flip-verso"><b>3 × 1000 = 3000 L</b></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ===== CAP 10 ===== -->
+  <section class="capitulo" id="c10">
+    <h2 class="cap-titulo">🔤 Capítulo 10 — Expressões algébricas</h2>
+    <div class="grid">
+      <div class="card">
+        <h3><span class="icone">✏️</span> Expressão algébrica</h3>
+        <p>Junta <span class="destaque">letras e números</span> (ou só letras). A letra é um valor desconhecido.</p>
+        <p>Ex.: <span class="formula">3x + 2</span>, <span class="formula">5,50 · x</span>.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icone">🔧</span> Coeficiente e parte literal</h3>
+        <p>Cada termo tem duas partes:</p>
+        <p>Em <span class="formula">7x</span> → coeficiente = <b>7</b>, parte literal = <b>x</b>.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icone">🔢</span> Valor numérico</h3>
+        <p>Troque a letra pelo número e calcule.</p>
+        <p>Ex.: 5x + 3y com x=2, y=3 → 10 + 9 = <b>19</b>.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icone">🧲</span> Termos semelhantes</h3>
+        <p>Têm a <span class="destaque">mesma parte literal</span>. Só esses somam/subtraem:</p>
+        <p>2x + 5x = <b>7x</b>; 8y − 3y = <b>5y</b>.</p>
+      </div>
+    </div>
+
+    <div style="margin:16px 0;">
+      <div class="postit"><b>Traduzindo palavras:</b> dobro = 2x · triplo = 3x · quadrado = x² · metade = x/2 · sucessor = x+1 · antecessor = x−1.</div>
+    </div>
+
+    <div class="peg">
+      <p><b>⚠️ Pegadinhas do Cap. 10</b></p>
+      <p>• x² é x×x, <b>não</b> x×2.<br>
+         • Só some termos <b>semelhantes</b> (3x + 2y NÃO é 5xy).<br>
+         • Ao reduzir, a parte literal <b>não muda</b>: 2x + 5x = 7x (nunca 7x²).</p>
+    </div>
+
+    <h3 style="color:var(--amarelo); margin-top:20px;">🃏 Cartas de treino (clique para virar)</h3>
+    <div class="flip-grid">
+      <div class="flip"><div class="flip-in">
+        <div class="flip-face flip-frente"><div class="q">Coeficiente de 9m</div><div class="dica">clique para ver</div></div>
+        <div class="flip-face flip-verso"><b>9</b> (parte literal: m)</div>
+      </div></div>
+      <div class="flip"><div class="flip-in">
+        <div class="flip-face flip-frente"><div class="q">4x + 3x</div><div class="dica">clique para ver</div></div>
+        <div class="flip-face flip-verso"><b>7x</b></div>
+      </div></div>
+      <div class="flip"><div class="flip-in">
+        <div class="flip-face flip-frente"><div class="q">Valor de 2a+1, a=6</div><div class="dica">clique para ver</div></div>
+        <div class="flip-face flip-verso"><b>2·6+1 = 13</b></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ===== CAP 12 ===== -->
+  <section class="capitulo" id="c12">
+    <h2 class="cap-titulo">⚖️ Capítulo 12 — Equações do 1º grau</h2>
+    <div class="grid">
+      <div class="card">
+        <h3><span class="icone">🟰</span> O que é equação</h3>
+        <p>Sentença com <span class="destaque">sinal de igual</span> e uma incógnita (letra desconhecida).</p>
+        <p>Ex.: <span class="formula">2x + 1 = 9</span>.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icone">⚖️</span> Princípio da balança</h3>
+        <p>O que faz de um lado, faz do outro.</p>
+        <p><b>Aditivo:</b> soma/subtrai igual dos dois lados.<br><b>Multiplicativo:</b> ×/÷ igual (não zero).</p>
+      </div>
+      <div class="card">
+        <h3><span class="icone">🔄</span> Operação inversa</h3>
+        <p>Para "passar" um número: use o inverso.</p>
+        <p>+ ↔ − &nbsp;e&nbsp; × ↔ ÷</p>
+        <p>Ex.: 3x = 12 → x = 12 ÷ 3 = <b>4</b>.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icone">🎯</span> Raiz e conjunto solução</h3>
+        <p><b>Raiz/solução</b> = valor que deixa a igualdade certa.</p>
+        <p>Vai no conjunto <b>S</b>. O universo <b>U</b> diz quais números valem (N, Z, Q).</p>
+      </div>
+      <div class="card">
+        <h3><span class="icone">↔️</span> Incógnita nos 2 lados</h3>
+        <p>Junte as letras de um lado, números do outro (trocando o sinal).</p>
+        <p>Ex.: 5x = 3x + 8 → 2x = 8 → <b>x = 4</b>.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icone">➖</span> Multiplicar por (−1)</h3>
+        <p>Se sobrar −x, multiplique tudo por (−1) para achar x.</p>
+      </div>
+    </div>
+
+    <div style="margin:16px 0;">
+      <div class="postit"><b>Passo a passo:</b> 1) tire os parênteses; 2) junte letras de um lado e números do outro (troque o sinal); 3) reduza; 4) divida pelo número da frente do x; 5) confira substituindo.</div>
+    </div>
+
+    <div class="peg">
+      <p><b>⚠️ Pegadinhas do Cap. 12</b></p>
+      <p>• 3x = 12 → x = 4 (dividir!), nunca x = 9.<br>
+         • Trocar o sinal ao mudar de lado.<br>
+         • Conjunto vazio = <b>S = { }</b> ou S = ∅, <b>nunca</b> S = {0}.</p>
+    </div>
+
+    <h3 style="color:var(--amarelo); margin-top:20px;">🃏 Cartas de treino (clique para virar)</h3>
+    <div class="flip-grid">
+      <div class="flip"><div class="flip-in">
+        <div class="flip-face flip-frente"><div class="q">x + 7 = 10</div><div class="dica">clique para ver</div></div>
+        <div class="flip-face flip-verso"><b>x = 3</b></div>
+      </div></div>
+      <div class="flip"><div class="flip-in">
+        <div class="flip-face flip-frente"><div class="q">5x = 45</div><div class="dica">clique para ver</div></div>
+        <div class="flip-face flip-verso"><b>x = 9</b></div>
+      </div></div>
+      <div class="flip"><div class="flip-in">
+        <div class="flip-face flip-frente"><div class="q">2x + 4 = 3x</div><div class="dica">clique para ver</div></div>
+        <div class="flip-face flip-verso"><b>4 = x → x = 4</b></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ===== GLOSSÁRIO ===== -->
+  <section class="capitulo" id="glo">
+    <h2 class="cap-titulo">📖 Glossário</h2>
+    <dl class="glossario">
+      <dt>Volume</dt><dd>Espaço que um sólido ocupa (em cm³, m³...).</dd>
+      <dt>Aresta</dt><dd>Cada "beirada" reta do cubo ou da caixa.</dd>
+      <dt>Paralelepípedo reto-retângulo</dt><dd>Sólido em formato de caixa; volume = comprimento × largura × altura.</dd>
+      <dt>Capacidade</dt><dd>Quanto de líquido cabe (medida em litros). 1 m³ = 1000 L.</dd>
+      <dt>Expressão algébrica</dt><dd>Cálculo formado por letras e números (ou só letras).</dd>
+      <dt>Termo algébrico</dt><dd>Cada pedaço da expressão (ex.: 7x).</dd>
+      <dt>Coeficiente</dt><dd>O número que multiplica a letra (em 7x, é o 7).</dd>
+      <dt>Parte literal</dt><dd>A(s) letra(s) do termo (em 7x, é o x).</dd>
+      <dt>Valor numérico</dt><dd>Resultado ao trocar a letra por um número.</dd>
+      <dt>Termos semelhantes</dt><dd>Termos com a mesma parte literal (ex.: 3x e 5x).</dd>
+      <dt>Equação</dt><dd>Igualdade com uma ou mais incógnitas.</dd>
+      <dt>Incógnita</dt><dd>A letra que representa o valor desconhecido.</dd>
+      <dt>Raiz / solução</dt><dd>Valor que torna a igualdade verdadeira.</dd>
+      <dt>Conjunto solução (S)</dt><dd>Onde escrevemos a resposta da equação, ex.: S = {4}.</dd>
+      <dt>Conjunto universo (U)</dt><dd>Quais números são aceitos: N (naturais), Z (inteiros), Q (racionais).</dd>
+      <dt>Conjunto vazio</dt><dd>Quando não há solução: S = { } ou S = ∅.</dd>
+    </dl>
+  </section>
+
+  <div class="salvamento">
+    <span class="info" id="infoSalvo">💾 Este resumo lembra em qual capítulo você parou e registra seu tempo de estudo.</span>
+    <button id="btnExport">📥 Exportar</button>
+    <button id="btnImport">📤 Importar</button>
+    <button id="btnZerar">🗑️ Zerar tudo</button>
+    <input type="file" id="fileImport" accept="application/json" style="display:none">
+  </div>
+
+  <div class="nav">
+    <a class="sec" href="leitura_estendida.html">← Leitura Estendida</a>
+    <a href="simulado.html">Ir para o Simulado →</a>
+  </div>
+</div>
+
+<div class="modal-fundo" id="modalFundo">
+  <div class="modal">
+    <p id="modalTxt"></p>
+    <div>
+      <button class="btn" id="modalOk">Sim</button>
+      <button class="btn refazer" id="modalCancel">Não</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var CHAVE="mat7_prova1009_resumo_v2";
+  var memoria={};
+  function salvarAba(id){
+    try{ localStorage.setItem(CHAVE, id); }catch(e){ memoria[CHAVE]=id; }
+    document.getElementById('infoSalvo').textContent="💾 Salvo — você estava em: "+id.toUpperCase()+" ("+new Date().toLocaleString('pt-BR')+")";
+  }
+  function lerAba(){ try{ return localStorage.getItem(CHAVE); }catch(e){ return memoria[CHAVE]||null; } }
+
+  var botoes=document.querySelectorAll('.abas button');
+  function ativar(alvo){
+    document.querySelectorAll('.capitulo').forEach(function(c){ c.classList.toggle('on', c.id===alvo); });
+    botoes.forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-alvo')===alvo); });
+    salvarAba(alvo);
+  }
+  botoes.forEach(function(b){ b.addEventListener('click', function(){ ativar(b.getAttribute('data-alvo')); }); });
+
+  document.querySelectorAll('.flip').forEach(function(f){
+    f.addEventListener('click', function(){ f.classList.toggle('vira'); });
+  });
+
+  var salvo=lerAba();
+  if(salvo && document.getElementById(salvo)) ativar(salvo);
+
+/* ====== RELÓGIO DE ESTUDO (regra 2026-09-07) — com % de rolagem ====== */
+var RELOGIO = (function(){
+  var KEY_T = CHAVE + "_tempo";
+  var SESSAO = 45*60, TRAVA = 5*60, INATIVO = 3*60;
+  var memT = {};
+  function lerT(){ try{ var s=localStorage.getItem(KEY_T); return s?JSON.parse(s):null; }catch(e){ return memT.v? JSON.parse(memT.v):null; } }
+  var st = lerT() || { total:0, ativo:0, sessoes:[], rolagem:0 };
+  if(!st.sessoes) st.sessoes=[]; if(!st.rolagem) st.rolagem=0;
+  var ligado=false, inativo=false, trava=false;
+  var sessAtivo=0, travaResta=0, ultAtiv=Date.now(), tick=null, salvaCada=0;
+
+  function gravarT(){ var t=JSON.stringify(st); try{ localStorage.setItem(KEY_T, t); }catch(e){ memT.v=t; } }
+  function fmt(s){ s=Math.max(0,Math.floor(s)); return Math.floor(s/60)+":"+("0"+(s%60)).slice(-2); }
+  function mostra(id,on){ var e=document.getElementById(id); if(e) e.classList.toggle('on', !!on); }
+  function renderRel(){
+    var t=document.getElementById('relTempo'); if(t) t.textContent=fmt(st.ativo);
+    var i=document.getElementById('relInfo');
+    if(i) i.textContent = trava? "pausa obrigatória — descanse!" : inativo? "pausado (toque para continuar)" : ligado? ("sessão: faltam "+fmt(SESSAO-sessAtivo)) : 'clique em "Começar a estudar"';
+  }
+  function medirRolagem(){
+    var doc=document.documentElement;
+    var total=doc.scrollHeight-window.innerHeight;
+    if(total<=0){ st.rolagem=100; return; }
+    var pct=Math.round(Math.min(1,(window.scrollY+0.0)/total)*100);
+    if(pct>st.rolagem) st.rolagem=pct;
+  }
+  function atividade(){
+    if(!ligado || trava) return;
+    ultAtiv = Date.now();
+    if(inativo){ inativo=false; mostra('relPausa', false); renderRel(); }
+    medirRolagem();
+  }
+  function passo(){
+    if(!ligado) return;
+    st.total++;
+    if(trava){
+      travaResta--;
+      var e=document.getElementById('relTravaConta'); if(e) e.textContent=fmt(travaResta);
+      if(travaResta<=0){ trava=false; sessAtivo=0; mostra('relTrava', false); novaSessao(); }
+    } else if(!inativo){
+      if(Date.now()-ultAtiv > INATIVO*1000){ inativo=true; mostra('relPausa', true); }
+      else{
+        st.ativo++; sessAtivo++;
+        if(sessAtivo>=SESSAO){ trava=true; travaResta=TRAVA; mostra('relTrava', true); }
+      }
+    }
+    salvaCada++; if(salvaCada>=5){ salvaCada=0; gravarT(); }
+    renderRel();
+  }
+  function novaSessao(){ st.sessoes.push({inicio:new Date().toISOString()}); gravarT(); }
+  function fechaSessao(botao){
+    var s=st.sessoes[st.sessoes.length-1];
+    if(s && !s.fim){ s.fim=new Date().toISOString(); if(botao) s.terminadaPeloBotao=true; }
+    gravarT();
+  }
+  function comecar(){
+    ligado=true; inativo=false; ultAtiv=Date.now(); sessAtivo=0;
+    document.body.classList.remove('rel-off');
+    mostra('relInicio', false); mostra('relFim', false);
+    novaSessao();
+    if(!tick) tick=setInterval(passo, 1000);
+    renderRel();
+  }
+  ['click','keydown','scroll','input','touchstart'].forEach(function(evt){
+    document.addEventListener(evt, atividade, true);
+  });
+  window.addEventListener('beforeunload', function(){ if(ligado) fechaSessao(false); gravarT(); });
+  document.getElementById('relComecar').addEventListener('click', comecar);
+  document.getElementById('relDeNovo').addEventListener('click', comecar);
+  document.getElementById('relTerminar').addEventListener('click', function(){ if(ligado && !trava) mostra('relConfirma', true); });
+  document.getElementById('relConfirmaNao').addEventListener('click', function(){ mostra('relConfirma', false); });
+  document.getElementById('relConfirmaSim').addEventListener('click', function(){
+    mostra('relConfirma', false);
+    ligado=false; fechaSessao(true); gravarT();
+    var r=document.getElementById('relFimResumo');
+    if(r) r.innerHTML = "Tempo ativo de revisão: <b>"+fmt(st.ativo)+"</b> (total: "+fmt(st.total)+"). Você leu <b>"+st.rolagem+"%</b> da página.";
+    document.body.classList.add('rel-off');
+    mostra('relFim', true);
+  });
+  renderRel();
+  return {
+    dados: function(){ return st; },
+    gravar: gravarT,
+    zerar: function(){ st={total:0,ativo:0,sessoes:[],rolagem:0}; try{ localStorage.removeItem(KEY_T); }catch(e){ delete memT.v; } gravarT(); renderRel(); },
+    importar: function(d){ if(d){ st=d; if(!st.sessoes)st.sessoes=[]; if(!st.rolagem)st.rolagem=0; gravarT(); renderRel(); } },
+    _debug: function(o){
+      o=o||{};
+      if(o.restante!=null) sessAtivo = SESSAO - o.restante;
+      if(o.trava!=null){ trava=true; travaResta=o.trava; mostra('relTrava', true); }
+      if(o.inativo!=null) ultAtiv = Date.now() - o.inativo*1000;
+      renderRel();
+    }
+  };
+})();
+
+/* ====== EXPORTAR / IMPORTAR / ZERAR ====== */
+document.getElementById('btnExport').addEventListener('click', function(){
+  var pacote = { material:"resumo", dados:{aba: lerAba()}, tempo:RELOGIO.dados() };
+  var blob = new Blob([JSON.stringify(pacote,null,2)], {type:"application/json"});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = "resumo_matematica_7ano.json";
+  a.click();
+});
+document.getElementById('btnImport').addEventListener('click', function(){ document.getElementById('fileImport').click(); });
+document.getElementById('fileImport').addEventListener('change', function(e){
+  var f = e.target.files[0]; if(!f) return;
+  var r = new FileReader();
+  r.onload = function(){
+    try{
+      var d = JSON.parse(r.result);
+      if(d && d.tempo) RELOGIO.importar(d.tempo);
+      if(d && d.dados && d.dados.aba && document.getElementById(d.dados.aba)) ativar(d.dados.aba);
+      mostrarModalInfo("Progresso importado!");
+    }
+    catch(err){ mostrarModalInfo("Não consegui ler esse arquivo."); }
+  };
+  r.readAsText(f);
+});
+var modalFundo = document.getElementById('modalFundo');
+document.getElementById('btnZerar').addEventListener('click', function(){
+  document.getElementById('modalTxt').textContent = "Tem certeza que quer apagar o progresso e o tempo de estudo deste resumo?";
+  document.getElementById('modalOk').style.display="inline-block";
+  document.getElementById('modalCancel').textContent="Não";
+  modalFundo.classList.add('on');
+  document.getElementById('modalOk').onclick = function(){
+    try{ localStorage.removeItem(CHAVE);}catch(e){ delete memoria[CHAVE]; }
+    RELOGIO.zerar();
+    modalFundo.classList.remove('on');
+    document.getElementById('infoSalvo').textContent="💾 Este resumo lembra em qual capítulo você parou e registra seu tempo de estudo.";
+  };
+});
+document.getElementById('modalCancel').addEventListener('click', function(){ modalFundo.classList.remove('on'); });
+function mostrarModalInfo(txt){
+  document.getElementById('modalTxt').textContent = txt;
+  document.getElementById('modalOk').style.display="none";
+  document.getElementById('modalCancel').textContent="Fechar";
+  modalFundo.classList.add('on');
+}
+</script>
+</body>
+</html>
