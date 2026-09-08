@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leitura Estendida — Matemática 7º ano | Central de Engenharia</title>
+<style>
+  :root{
+    --bg:#0b1f33;
+    --bg2:#0e2740;
+    --painel:#10314f;
+    --linha:#1d4b74;
+    --ciano:#4cc9f0;
+    --ciano-forte:#20b6e6;
+    --branco:#eaf4fb;
+    --cinza:#9fbdd6;
+    --verde:#37d67a;
+    --verde-bg:#0f3a2a;
+    --vermelho:#ff6b6b;
+    --vermelho-bg:#3a1414;
+    --amarelo:#ffd23f;
+    --laranja:#ff9f45;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:0;
+    font-family:"Segoe UI", Arial, sans-serif;
+    color:var(--branco);
+    background:
+      linear-gradient(rgba(11,31,51,.94),rgba(11,31,51,.97)),
+      repeating-linear-gradient(0deg, transparent 0 39px, rgba(76,201,240,.08) 39px 40px),
+      repeating-linear-gradient(90deg, transparent 0 39px, rgba(76,201,240,.08) 39px 40px),
+      var(--bg);
+    line-height:1.6;
+  }
+  .wrap{max-width:860px; margin:0 auto; padding:64px 16px 80px;}
+  body.rel-off .wrap{filter:blur(7px); pointer-events:none; user-select:none;}
+  header.topo{
+    text-align:center; padding:26px 18px;
+    border:1.5px solid var(--linha); border-radius:16px;
+    background:linear-gradient(135deg,var(--bg2),var(--painel));
+    margin-bottom:18px;
+  }
+  header.topo .selo{
+    display:inline-block; font-size:13px; letter-spacing:2px;
+    color:var(--ciano); border:1px solid var(--ciano);
+    padding:3px 12px; border-radius:20px; margin-bottom:10px; text-transform:uppercase;
+  }
+  header.topo h1{margin:6px 0 4px; font-size:26px; color:#fff;}
+  header.topo p{margin:0; color:var(--cinza); font-size:15px;}
+  .barra-topo{
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+    justify-content:space-between; margin-bottom:16px;
+  }
+  .prog-cont{flex:1; min-width:200px;}
+  .prog-fundo{height:14px; background:var(--painel); border-radius:20px; overflow:hidden; border:1px solid var(--linha);}
+  .prog-cheio{height:100%; width:0; background:linear-gradient(90deg,var(--ciano),var(--verde)); transition:width .5s;}
+  .prog-txt{font-size:13px; color:var(--cinza); margin-top:4px;}
+  .salvamento{
+    background:var(--painel); border:1px solid var(--linha); border-radius:12px;
+    padding:10px 14px; font-size:13px; display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+    margin-bottom:18px;
+  }
+  .salvamento .info{color:var(--cinza); flex:1; min-width:160px;}
+  .salvamento button{
+    background:transparent; border:1px solid var(--linha); color:var(--branco);
+    padding:6px 10px; border-radius:8px; cursor:pointer; font-size:12px;
+  }
+  .salvamento button:hover{border-color:var(--ciano); color:var(--ciano);}
+
+  .mapa{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:20px;}
+  .mapa .estacao{
+    font-size:12px; padding:6px 12px; border-radius:20px;
+    border:1px solid var(--linha); color:var(--cinza); background:var(--painel);
+  }
+  .mapa .estacao.ativa{border-color:var(--ciano); color:var(--ciano);}
+  .mapa .estacao.ok{border-color:var(--verde); color:var(--verde);}
+  .mapa .estacao.rev{border-color:var(--laranja); color:var(--laranja);}
+
+  .secao{
+    border:1.5px solid var(--linha); border-radius:16px;
+    background:linear-gradient(135deg,var(--bg2),var(--painel));
+    margin-bottom:18px; overflow:hidden;
+  }
+  .secao.travada{opacity:.55;}
+  .secao-cab{
+    display:flex; align-items:center; gap:12px; padding:16px 18px;
+    cursor:pointer; background:rgba(76,201,240,.06);
+  }
+  .secao-cab .num{
+    width:38px; height:38px; flex:none; border-radius:10px;
+    background:var(--linha); color:#fff; display:flex; align-items:center; justify-content:center;
+    font-weight:bold; font-size:16px;
+  }
+  .secao-cab.ok .num{background:var(--verde); color:#04231a;}
+  .secao-cab h2{margin:0; font-size:18px; color:#fff;}
+  .secao-cab .cap{font-size:12px; color:var(--ciano);}
+  .secao-cab .cadeado{margin-left:auto; font-size:20px;}
+  .secao-corpo{display:none; padding:6px 20px 22px;}
+  .secao-corpo.aberta{display:block;}
+
+  .leitura p{margin:12px 0;}
+  .destaque{color:var(--ciano); font-weight:bold;}
+  .formula{
+    display:inline-block; background:#071b2e; border:1px solid var(--linha);
+    border-radius:8px; padding:2px 10px; font-family:"Consolas",monospace;
+    color:var(--amarelo); font-weight:bold;
+  }
+  .caixa-formula{
+    background:#071b2e; border-left:4px solid var(--ciano); border-radius:10px;
+    padding:12px 16px; margin:14px 0; font-size:16px;
+  }
+  .exemplo{
+    background:rgba(55,214,122,.08); border:1px dashed var(--verde);
+    border-radius:10px; padding:12px 16px; margin:14px 0;
+  }
+  .exemplo b{color:var(--verde);}
+  .pegadinha{
+    background:var(--vermelho-bg); border-left:4px solid var(--vermelho);
+    border-radius:10px; padding:12px 16px; margin:14px 0;
+  }
+  .pegadinha b{color:var(--vermelho);}
+
+  /* ===== PERGUNTAS DE CAMPO LIVRE (formato novo) ===== */
+  .escrever{margin-top:18px; border-top:1px dashed var(--linha); padding-top:14px;}
+  .escrever h3{color:var(--ciano); font-size:16px; margin:0 0 4px;}
+  .escrever .obj{font-size:13px; color:var(--cinza); margin:0 0 12px;}
+  .perg{margin:0 0 16px; background:#0a2138; border:1px solid var(--linha); border-radius:12px; padding:14px 16px;}
+  .perg.vermelha{border-color:var(--vermelho); background:#2b1010;}
+  .perg .enun{font-weight:600; margin:0 0 10px;}
+  .perg textarea{
+    width:100%; min-height:76px; background:#071b2e; color:var(--branco);
+    border:1px solid var(--linha); border-radius:10px; padding:10px;
+    font-size:15px; font-family:inherit; resize:vertical;
+  }
+  .perg textarea:focus{outline:2px solid var(--ciano);}
+  .perg textarea[readonly]{opacity:.8;}
+  .aviso-copia{
+    display:none; margin-top:10px; background:rgba(255,210,63,.12); border:1px solid var(--amarelo);
+    border-radius:10px; padding:10px 14px; font-size:14px; color:var(--amarelo);
+  }
+  .aviso-copia.on{display:block;}
+  .marca-vermelha{
+    display:none; margin-top:10px; background:var(--vermelho-bg); border:1px solid var(--vermelho);
+    border-radius:10px; padding:10px 14px; font-size:14px; color:var(--vermelho);
+  }
+  .marca-vermelha.on{display:block;}
+  .modelo-resp{
+    display:none; margin-top:10px; background:var(--verde-bg); border-left:4px solid var(--verde);
+    border-radius:10px; padding:10px 14px; font-size:14px;
+  }
+  .modelo-resp.on{display:block;}
+  .modelo-resp b{color:var(--verde);}
+  .chk{display:none; margin-top:10px; border-top:1px dashed var(--linha); padding-top:10px;}
+  .chk.on{display:block;}
+  .chk .item{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:8px 0; font-size:14px;}
+  .chk .item span{flex:1; min-width:200px; color:var(--cinza);}
+  .chk button{
+    background:transparent; border:1px solid var(--linha); color:var(--branco);
+    padding:5px 12px; border-radius:16px; cursor:pointer; font-size:13px;
+  }
+  .chk button.sim.on{background:var(--verde); border-color:var(--verde); color:#04231a; font-weight:bold;}
+  .chk button.nao.on{background:var(--vermelho); border-color:var(--vermelho); color:#fff; font-weight:bold;}
+  .status-bloco{margin-top:12px; font-size:14px; padding:10px 14px; border-radius:10px; display:none;}
+  .status-bloco.okk{display:block; background:var(--verde-bg); border:1px solid var(--verde); color:var(--verde);}
+  .status-bloco.rev{display:block; background:rgba(255,159,69,.1); border:1px solid var(--laranja); color:var(--laranja);}
+
+  /* ===== FIXAÇÃO ===== */
+  .fixacao{margin-top:18px; border-top:1px dashed var(--linha); padding-top:14px;}
+  .fixacao h3{color:var(--amarelo); font-size:16px; margin:0 0 4px;}
+  .fixacao .obj{font-size:13px; color:var(--cinza); margin:0 0 12px;}
+  .questao{margin:0 0 16px; background:#0a2138; border:1px solid var(--linha); border-radius:12px; padding:14px 16px;}
+  .questao .enun{font-weight:600; margin:0 0 10px;}
+  .questao .alts{list-style:none; margin:0; padding:0;}
+  .questao .alts li{margin:6px 0;}
+  .questao .alts label{
+    display:flex; align-items:center; gap:10px; padding:9px 12px;
+    border:1px solid var(--linha); border-radius:10px; cursor:pointer; transition:.15s;
+  }
+  .questao .alts label:hover{border-color:var(--ciano); background:rgba(76,201,240,.06);}
+  .questao .alts input{width:18px; height:18px; accent-color:var(--ciano);}
+  label.certa{background:var(--verde-bg)!important; border-color:var(--verde)!important;}
+  label.errada{background:var(--vermelho-bg)!important; border-color:var(--vermelho)!important;}
+  .marca{margin-left:auto; font-size:12px; font-weight:bold; padding:2px 9px; border-radius:14px;}
+  .marca.ok{background:var(--verde); color:#04231a;}
+  .marca.x{background:var(--vermelho); color:#fff;}
+
+  .btn{
+    background:linear-gradient(135deg,var(--ciano),var(--ciano-forte));
+    color:#04283a; border:none; font-weight:bold; font-size:16px;
+    padding:12px 24px; border-radius:10px; cursor:pointer; margin-top:6px;
+  }
+  .btn:disabled{background:#274b68; color:#7f9bb4; cursor:not-allowed;}
+  .btn.refazer{background:linear-gradient(135deg,var(--laranja),#ff7f2a); color:#3a1a00;}
+  .resultado-sec{margin-top:12px; font-size:15px; padding:12px 16px; border-radius:10px; display:none;}
+  .resultado-sec.pass{display:block; background:var(--verde-bg); border:1px solid var(--verde); color:var(--verde);}
+  .resultado-sec.fail{display:block; background:var(--vermelho-bg); border:1px solid var(--vermelho); color:var(--vermelho);}
+
+  .final{
+    display:none; text-align:center; border:2px solid var(--verde); border-radius:18px;
+    background:linear-gradient(135deg,#0f3a2a,#0e2740); padding:34px 22px; margin-top:20px;
+  }
+  .final.on{display:block; animation:pop .5s;}
+  @keyframes pop{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+  .final h2{color:var(--verde); font-size:26px; margin:0 0 8px;}
+  .final .tab-cob{width:100%; border-collapse:collapse; margin:18px 0; font-size:14px;}
+  .final .tab-cob th,.final .tab-cob td{border:1px solid var(--linha); padding:8px 10px; text-align:left;}
+  .final .tab-cob th{background:var(--painel); color:var(--ciano);}
+  .peg-final{background:var(--vermelho-bg); border:1px solid var(--vermelho); border-radius:12px; padding:16px; text-align:left; margin-top:16px;}
+  .peg-final h3{color:var(--vermelho); margin:0 0 8px;}
+  .peg-final ol{margin:0; padding-left:20px;}
+  .peg-final li{margin:6px 0;}
+  .revisar{background:rgba(255,159,69,.08); border:1px solid var(--laranja); border-radius:12px; padding:16px; text-align:left; margin-top:16px;}
+  .revisar h3{color:var(--laranja); margin:0 0 8px;}
+  .revisar ul{margin:0; padding-left:20px;}
+  .revisar li{margin:6px 0; font-size:14px;}
+  .nav-fim{margin-top:18px;}
+  .nav-fim a{
+    display:inline-block; background:var(--ciano); color:#04283a; text-decoration:none;
+    font-weight:bold; padding:12px 22px; border-radius:10px;
+  }
+  .modal-fundo{position:fixed; inset:0; background:rgba(4,12,20,.75); display:none; align-items:center; justify-content:center; z-index:50;}
+  .modal-fundo.on{display:flex;}
+  .modal{background:var(--bg2); border:1.5px solid var(--ciano); border-radius:14px; padding:22px; max-width:340px; text-align:center;}
+  .modal p{margin:0 0 16px;}
+  .modal button{margin:0 6px;}
+
+  /* ===== RELÓGIO DE ESTUDO ===== */
+  .rel-topo{
+    position:fixed; top:0; left:0; right:0; z-index:60;
+    background:rgba(7,27,46,.96); border-bottom:1px solid var(--linha);
+    display:flex; align-items:center; gap:10px; padding:8px 14px; font-size:14px;
+  }
+  .rel-topo #relTempo{font-family:"Consolas",monospace; font-weight:bold; color:var(--ciano); font-size:16px;}
+  .rel-topo .rel-info{color:var(--cinza); font-size:12px; flex:1;}
+  .rel-btn{
+    background:transparent; border:1px solid var(--linha); color:var(--cinza);
+    padding:5px 10px; border-radius:8px; cursor:pointer; font-size:12px;
+  }
+  .rel-btn:hover{border-color:var(--vermelho); color:var(--vermelho);}
+  .rel-overlay{
+    position:fixed; inset:0; background:rgba(4,12,20,.88); display:none;
+    align-items:center; justify-content:center; z-index:70; padding:20px;
+  }
+  .rel-overlay.on{display:flex;}
+  .rel-modal{
+    background:var(--bg2); border:1.5px solid var(--ciano); border-radius:16px;
+    padding:30px 26px; max-width:420px; text-align:center;
+  }
+  .rel-modal h2{margin:8px 0; color:#fff;}
+  .rel-modal p{color:var(--cinza); font-size:15px;}
+  .rel-modal .grande{font-size:46px;}
+  .rel-modal .conta{font-family:"Consolas",monospace; font-size:38px; color:var(--amarelo); font-weight:bold;}
+</style>
+</head>
+<body class="rel-off">
+
+<!-- ===== RELÓGIO DE ESTUDO ===== -->
+<div class="rel-topo" id="relTopo">
+  <span>⏱️</span><span id="relTempo">0:00</span>
+  <span class="rel-info" id="relInfo">clique em "Começar a estudar"</span>
+  <button class="rel-btn" id="relTerminar">⏹ Terminar agora</button>
+</div>
+<div class="rel-overlay on" id="relInicio">
+  <div class="rel-modal">
+    <div class="grande">⏱️</div>
+    <h2>Hora de estudar, jovem aprendiz!</h2>
+    <p>O relógio de estudo registra quanto tempo você estudou de verdade. Você estuda em sessões de <b>45 minutos</b>; no fim de cada uma, há uma pausa obrigatória de 5 minutos para descansar.</p>
+    <button class="btn" id="relComecar">▶️ Começar a estudar</button>
+  </div>
+</div>
+<div class="rel-overlay" id="relPausa">
+  <div class="rel-modal">
+    <div class="grande">😴</div>
+    <h2>Estudo pausado</h2>
+    <p>Percebi que você parou um pouquinho. O relógio pausou sozinho.<br><b>Toque em qualquer lugar para continuar.</b></p>
+  </div>
+</div>
+<div class="rel-overlay" id="relTrava">
+  <div class="rel-modal">
+    <div class="grande">🧃</div>
+    <h2>Pausa obrigatória!</h2>
+    <p>Você estudou 45 minutos seguidos — muito bem! Levante, beba água e estique as pernas. O material volta sozinho em:</p>
+    <div class="conta" id="relTravaConta">5:00</div>
+    <p style="font-size:13px">Suas respostas estão salvas. 😉</p>
+  </div>
+</div>
+<div class="rel-overlay" id="relConfirma">
+  <div class="rel-modal">
+    <div class="grande">⏹</div>
+    <h2>Terminar agora?</h2>
+    <p>O relógio de estudo será encerrado e o tempo registrado. Tem certeza?</p>
+    <button class="btn" id="relConfirmaSim">Sim, terminar</button>
+    <button class="btn refazer" id="relConfirmaNao">Continuar estudando</button>
+  </div>
+</div>
+<div class="rel-overlay" id="relFim">
+  <div class="rel-modal">
+    <div class="grande">🏁</div>
+    <h2>Estudo encerrado</h2>
+    <p id="relFimResumo"></p>
+    <button class="btn" id="relDeNovo">▶️ Estudar de novo</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="topo">
+    <span class="selo">Central de Engenharia • Projeto Matemática</span>
+    <h1>📐 Leitura Estendida com Fixação</h1>
+    <p>7º ano — Coração Feliz • Avaliação Mensal 1 (10/09/2026)<br>Cap. 9 Volume • Cap. 10 Expressões algébricas • Cap. 12 Equações do 1º grau</p>
+  </header>
+
+  <div class="barra-topo">
+    <div class="prog-cont">
+      <div class="prog-fundo"><div class="prog-cheio" id="progCheio"></div></div>
+      <div class="prog-txt" id="progTxt">0 de 6 estações concluídas</div>
+    </div>
+  </div>
+
+  <div class="salvamento">
+    <span class="info" id="infoSalvo">Seu progresso é salvo automaticamente neste computador.</span>
+    <button id="btnExport">📥 Exportar</button>
+    <button id="btnImport">📤 Importar</button>
+    <button id="btnZerar">🗑️ Zerar tudo</button>
+    <input type="file" id="fileImport" accept="application/json" style="display:none">
+  </div>
+
+  <div class="mapa" id="mapa"></div>
+
+  <div id="secoes"></div>
+
+  <div class="final" id="final">
+    <h2>🏗️ Projeto concluído, jovem aprendiz!</h2>
+    <p>Você percorreu as 6 estações da Central de Engenharia e dominou os 3 capítulos da prova. Antes da avaliação, revise o Resumo e treine no Simulado e na Folha de Problemas.</p>
+
+    <div class="revisar" id="revisar" style="display:none">
+      <h3>🔁 Para revisar antes da prova</h3>
+      <ul id="revisarLista"></ul>
+    </div>
+
+    <table class="tab-cob">
+      <tr><th>Tópico</th><th>Onde foi estudado</th></tr>
+      <tr><td>O que é volume / volume do cubo (a³)</td><td>Estação 1 (Cap. 9)</td></tr>
+      <tr><td>Volume do paralelepípedo e litros (1 m³ = 1000 L)</td><td>Estação 2 (Cap. 9)</td></tr>
+      <tr><td>Expressão algébrica, coeficiente e parte literal</td><td>Estação 3 (Cap. 10)</td></tr>
+      <tr><td>Valor numérico e termos semelhantes</td><td>Estação 4 (Cap. 10)</td></tr>
+      <tr><td>O que é equação e como resolver</td><td>Estação 5 (Cap. 12)</td></tr>
+      <tr><td>Incógnita nos dois lados e problemas</td><td>Estação 6 (Cap. 12)</td></tr>
+    </table>
+
+    <div class="peg-final">
+      <h3>⚠️ 10 pegadinhas que mais derrubam na prova</h3>
+      <ol>
+        <li>Confundir <b>área</b> (2 dimensões, m²) com <b>volume</b> (3 dimensões, m³).</li>
+        <li>No cubo é <b>a × a × a</b> (três vezes), não a × 3.</li>
+        <li>Errar a troca: <b>1 m³ = 1000 L</b> (e 1 dm³ = 1 L), não 100 L.</li>
+        <li>Achar que <b>x²</b> é x × 2. Na verdade é x × x.</li>
+        <li>Somar termos que <b>não</b> são semelhantes (ex.: 3x + 2y ≠ 5xy).</li>
+        <li>Na redução, mexer na parte literal: <b>2x + 5x = 7x</b>, não 7x².</li>
+        <li>Em <b>3x = 12</b>, dividir por 3 → x = 4 (não somar: x ≠ 9).</li>
+        <li>Esquecer de trocar o sinal ao passar um número para o outro lado.</li>
+        <li>Deixar a resposta em <b>−x</b>: multiplique tudo por (−1) para achar x.</li>
+        <li>Escrever o conjunto vazio como S = {0}. O certo é <b>S = { }</b> ou S = ∅.</li>
+      </ol>
+    </div>
+
+    <div class="nav-fim"><a href="resumo.html">Ir para o Resumo →</a></div>
+  </div>
+</div>
+
+<div class="modal-fundo" id="modalFundo">
+  <div class="modal">
+    <p id="modalTxt"></p>
+    <div>
+      <button class="btn" id="modalOk">Sim</button>
+      <button class="btn refazer" id="modalCancel">Não</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ====== DADOS DAS ESTAÇÕES ====== */
+var SECOES = [
+  {
+    cap:"Capítulo 9 — Volume",
+    titulo:"O que é volume e o volume do cubo",
+    leitura:
+      '<p><b>Volume</b> é o espaço que um sólido ocupa. Para medir, imaginamos quantos <span class="destaque">cubinhos de 1 cm de aresta</span> cabem dentro dele. Cada cubinho vale <span class="formula">1 cm³</span> (lê-se "um centímetro cúbico").</p>'+
+      '<p>No <b>cubo</b>, as três dimensões (comprimento, largura e altura) são iguais. Por isso o volume é a aresta multiplicada por ela mesma três vezes:</p>'+
+      '<div class="caixa-formula">Volume do cubo = aresta × aresta × aresta = <span class="formula">a³</span></div>'+
+      '<div class="exemplo"><b>Exemplo:</b> um cubo de aresta 3 cm tem volume 3 × 3 × 3 = <b>27 cm³</b>. Um cubo de aresta 10 cm tem 10 × 10 × 10 = <b>1000 cm³</b>.</div>'+
+      '<div class="pegadinha"><b>Cuidado!</b> a³ é a × a × a (três vezes), <b>não</b> a × 3. Aresta 5 → 5 × 5 × 5 = 125, e não 15.</div>',
+    perguntas:[
+      {enun:"Calcule, mostrando o passo a passo da conta, o volume de um cubo com aresta de 4 cm. (Esse exercício não está no texto — faça a conta você mesmo.)",
+       modelo:"V = 4 × 4 × 4 = 64. O volume é 64 cm³. (Vale escrever em etapas: 4 × 4 = 16 e 16 × 4 = 64.)",
+       chk:["Minha resposta multiplicou o 4 três vezes (4×4×4), sem fazer 4×3?","Minha resposta chegou em 64 e usou a unidade cm³?"]},
+      {enun:"Invente um problema seu sobre o volume de um cubo (use um valor de aresta diferente dos exemplos do texto) e resolva-o.",
+       modelo:"Resposta pessoal. Exemplo: \"Uma caixa cúbica tem 6 cm de aresta. Qual é o volume?\" → 6 × 6 × 6 = 216 cm³.",
+       chk:["Meu problema é novo, com um número escolhido por mim?","Minha resolução multiplicou a aresta três vezes?"]},
+      {enun:"Explique, como se fosse para um colega do 5º ano, por que o volume do cubo é a × a × a e não a × 3.",
+       modelo:"Porque o volume conta os cubinhos em três direções: multiplico a aresta pelo comprimento, pela largura e pela altura (que no cubo são iguais). Se fosse a × 3, daria um número muito menor: aresta 5 → 125 cubinhos, e não 15.",
+       chk:["Minha explicação falou das três dimensões (comprimento, largura e altura)?","Minha explicação mostrou, com um exemplo, que a×3 dá resultado errado?"]}
+    ],
+    questoes:[
+      {enun:"Qual é o volume de um cubo com aresta de 3 cm?", alts:["9 cm³","27 cm³","6 cm³","12 cm³"], correta:1},
+      {enun:"Qual é o volume de um cubo com aresta de 5 cm?", alts:["25 cm³","15 cm³","125 cm³","10 cm³"], correta:2},
+      {enun:"Um cubo tem volume de 1000 cm³. Quanto mede cada aresta?", alts:["100 cm","10 cm","50 cm","30 cm"], correta:1},
+      {enun:"Um cubo tem 1 cm de aresta. Qual é o seu volume?", alts:["1 cm","1 cm²","1 cm³","1 L"], correta:2},
+      {enun:"Qual é o volume de um cubo de aresta 2 m?", alts:["6 m³","8 m³","4 m³","12 m³"], correta:1}
+    ]
+  },
+  {
+    cap:"Capítulo 9 — Volume",
+    titulo:"Volume do paralelepípedo e a relação com litros",
+    leitura:
+      '<p>O <b>paralelepípedo reto-retângulo</b> (formato de caixa) tem as três dimensões diferentes. O volume é o produto delas:</p>'+
+      '<div class="caixa-formula">Volume = comprimento × largura × altura</div>'+
+      '<div class="exemplo"><b>Exemplo:</b> uma caixa de 3 m × 4 m × 5 m tem volume 3 × 4 × 5 = <b>60 m³</b>.</div>'+
+      '<p>Volume também vira <b>capacidade</b> (litros). As trocas mais importantes são:</p>'+
+      '<div class="caixa-formula"><span class="formula">1 m³ = 1000 L</span> &nbsp;&nbsp; e &nbsp;&nbsp; <span class="formula">1 dm³ = 1 L</span></div>'+
+      '<div class="exemplo"><b>Exemplo do livro:</b> uma piscina de 9 m × 5 m × 2 m tem 90 m³ = <b>90 000 L</b>. Como cada caminhão-pipa leva 15 000 L, são precisos 6 caminhões.</div>'+
+      '<div class="pegadinha"><b>Cuidado!</b> não confunda a troca: 1 m³ = 1000 L (não 100 L). E lembre: m³ é volume, L é capacidade.</div>',
+    perguntas:[
+      {enun:"Uma caixa-d'água mede 2 m × 2 m × 1,5 m. Calcule o volume e diga quantos litros ela guarda, mostrando as contas. (Exercício novo — não está no texto.)",
+       modelo:"V = 2 × 2 × 1,5 = 6 m³. Como 1 m³ = 1000 L, a caixa guarda 6 × 1000 = 6000 L.",
+       chk:["Minha resposta multiplicou as três medidas e achou 6 m³?","Minha resposta converteu com 1 m³ = 1000 L e achou 6000 L?"]},
+      {enun:"Crie um problema seu envolvendo uma piscina (ou caixa) e a conversão para litros, e resolva-o.",
+       modelo:"Resposta pessoal. Exemplo: \"Uma piscina tem 6 m × 3 m × 2 m. Quantos litros de água cabem nela?\" → V = 36 m³ → 36 × 1000 = 36 000 L.",
+       chk:["Meu problema tem as 3 medidas e pede a resposta em litros?","Minha resolução multiplicou as medidas e depois multiplicou por 1000?"]},
+      {enun:"Explique com suas palavras a diferença entre volume e capacidade, e como passar de m³ para litros.",
+       modelo:"Volume é o espaço que o objeto ocupa (medido em m³, cm³...). Capacidade é quanto líquido cabe dentro (medida em litros). Para passar de m³ para litros, multiplico por 1000, porque 1 m³ = 1000 L.",
+       chk:["Minha resposta diferenciou volume (espaço) de capacidade (litros)?","Minha resposta disse que multiplica por 1000?"]}
+    ],
+    questoes:[
+      {enun:"Qual é o volume de uma caixa de 3 cm × 4 cm × 5 cm?", alts:["12 cm³","60 cm³","35 cm³","20 cm³"], correta:1},
+      {enun:"Uma caixa mede 2 m × 3 m × 1 m. Qual é o volume?", alts:["6 m³","5 m³","12 m³","3 m³"], correta:0},
+      {enun:"Quantos litros cabem em 1 m³?", alts:["100 L","10 L","1000 L","1 L"], correta:2},
+      {enun:"Uma piscina tem 90 m³ de água. Isso equivale a quantos litros?", alts:["900 L","9000 L","90 000 L","90 L"], correta:2},
+      {enun:"5 m³ equivalem a quantos litros?", alts:["50 L","500 L","5000 L","5 L"], correta:2},
+      {enun:"1 dm³ equivale a:", alts:["10 L","1 L","100 L","1000 L"], correta:1}
+    ]
+  },
+  {
+    cap:"Capítulo 10 — Expressões algébricas",
+    titulo:"Expressão algébrica, coeficiente e parte literal",
+    leitura:
+      '<p>Uma <b>expressão algébrica</b> é formada por <span class="destaque">letras e números</span> (ou só letras). A letra representa um valor que ainda não conhecemos. Ex.: <span class="formula">5,50 · x</span> pode ser o preço de x litros de gasolina.</p>'+
+      '<p>Cada pedaço de uma expressão é um <b>termo algébrico</b>. Ele tem duas partes:</p>'+
+      '<div class="caixa-formula">termo <span class="formula">7x</span> → <b>coeficiente</b> = 7 (o número) &nbsp;|&nbsp; <b>parte literal</b> = x (a letra)</div>'+
+      '<div class="exemplo"><b>Traduzindo palavras em expressões:</b> o dobro de m = <b>2m</b>; o triplo de n = <b>3n</b>; a soma de x com 8 = <b>x + 8</b>; a metade de y = <b>y/2</b>.</div>'+
+      '<div class="pegadinha"><b>Cuidado!</b> "o dobro de m" é 2m (multiplica), não m² nem m+2.</div>',
+    perguntas:[
+      {enun:"Escreva a expressão algébrica para \"o quádruplo de um número n, aumentado de 7\" e aponte o coeficiente e a parte literal do termo que tem letra.",
+       modelo:"4n + 7. No termo 4n, o coeficiente é 4 e a parte literal é n.",
+       chk:["Minha resposta escreveu 4n + 7?","Minha resposta apontou coeficiente 4 e parte literal n?"]},
+      {enun:"Invente uma situação do seu dia a dia que possa virar uma expressão algébrica (diferente da gasolina do texto) e escreva a expressão.",
+       modelo:"Resposta pessoal. Exemplo: \"Cada figurinha custa R$ 2,50. O preço de x figurinhas é 2,50 · x.\"",
+       chk:["Minha situação tem um valor que se repete e uma quantidade desconhecida?","Minha expressão usa uma letra (ex.: 2,50 · x)?"]},
+      {enun:"Um colega disse que, na expressão 9ab, o coeficiente é \"9a\". Explique para ele qual foi o erro.",
+       modelo:"O coeficiente é só o número que multiplica as letras: 9. A parte literal é ab (todas as letras juntas). Ele errou porque misturou uma letra dentro do coeficiente.",
+       chk:["Minha resposta disse que o coeficiente é 9?","Minha resposta disse que a parte literal é ab?"]}
+    ],
+    questoes:[
+      {enun:"Na expressão 7x, qual é o coeficiente?", alts:["x","7","7x","1"], correta:1},
+      {enun:"Na expressão 5ab, qual é a parte literal?", alts:["5","ab","5ab","a"], correta:1},
+      {enun:'Como se escreve "o dobro de um número m"?', alts:["m²","2m","m + 2","m/2"], correta:1},
+      {enun:'Como se escreve "a soma de um número x com 8"?', alts:["8x","x − 8","x + 8","x/8"], correta:2},
+      {enun:"Qual das opções é uma expressão algébrica?", alts:["3 + 5","2 × 4","3x + 2","10 − 7"], correta:2},
+      {enun:'Como se escreve "o triplo de n"?', alts:["n³","3 + n","3n","n/3"], correta:2}
+    ]
+  },
+  {
+    cap:"Capítulo 10 — Expressões algébricas",
+    titulo:"Valor numérico e termos semelhantes",
+    leitura:
+      '<p>O <b>valor numérico</b> de uma expressão é o resultado quando <span class="destaque">trocamos a letra por um número</span> e fazemos as contas.</p>'+
+      '<div class="exemplo"><b>Exemplo:</b> na expressão 5x + 3y, se x = 2 e y = 3, então 5·2 + 3·3 = 10 + 9 = <b>19</b>.</div>'+
+      '<p><b>Termos semelhantes</b> são os que têm a <span class="destaque">mesma parte literal</span>. Só esses podem ser somados ou subtraídos — somamos os coeficientes e a parte literal fica igual.</p>'+
+      '<div class="caixa-formula">2x + 5x = <b>7x</b> &nbsp;|&nbsp; 8y − 3y = <b>5y</b> &nbsp;|&nbsp; 45x e 2x são semelhantes; 8ab e 9b <b>não</b> são.</div>'+
+      '<div class="pegadinha"><b>Cuidado!</b> x² NÃO é x·2, é x·x. E 2x + 5x = 7x (a parte literal continua x, nunca vira x²).</div>',
+    perguntas:[
+      {enun:"Calcule o valor numérico de 3x + 2y para x = 4 e y = 5, mostrando cada passo. (Exercício novo — não está no texto.)",
+       modelo:"3·4 + 2·5 = 12 + 10 = 22.",
+       chk:["Minha resposta trocou x por 4 e y por 5?","Minha resposta chegou em 22?"]},
+      {enun:"Reduza os termos semelhantes de 6a + 3b − 2a + b, mostrando como você agrupou.",
+       modelo:"(6a − 2a) + (3b + b) = 4a + 4b.",
+       chk:["Minha resposta juntou a com a e b com b, sem misturar?","Minha resposta chegou em 4a + 4b?"]},
+      {enun:"Um colega escreveu 3x + 2y = 5xy. Explique para ele, com suas palavras, por que isso está errado.",
+       modelo:"3x e 2y não são termos semelhantes, porque as partes literais são diferentes (x e y). Só podemos somar termos com a mesma parte literal — então a expressão fica 3x + 2y mesmo, sem juntar.",
+       chk:["Minha resposta disse que x e y são partes literais diferentes?","Minha resposta disse que só termos semelhantes podem ser somados?"]}
+    ],
+    questoes:[
+      {enun:"Qual é o valor numérico de 2x quando x = 5?", alts:["7","10","25","52"], correta:1},
+      {enun:"Qual é o valor numérico de 3x + 1 quando x = 4?", alts:["13","12","7","15"], correta:0},
+      {enun:"Qual é o valor numérico de x² quando x = 3?", alts:["6","9","23","33"], correta:1},
+      {enun:"Quanto é 2x + 5x?", alts:["7x","10x","7x²","25x"], correta:0},
+      {enun:"Qual par contém termos semelhantes?", alts:["3x e 5x","3x e 3y","2a e 2b","x e x²"], correta:0},
+      {enun:"Quanto é 8y − 3y?", alts:["5","5y","11y","5y²"], correta:1},
+      {enun:"Reduza os termos semelhantes: 4a + 2b + 3a", alts:["9ab","7a + 2b","5a + 4b","7ab"], correta:1}
+    ]
+  },
+  {
+    cap:"Capítulo 12 — Equações do 1º grau",
+    titulo:"O que é equação e como resolver",
+    leitura:
+      '<p>Uma <b>equação</b> é uma sentença matemática com o sinal de <span class="destaque">igual (=)</span> e uma ou mais letras desconhecidas, chamadas <b>incógnitas</b>. Ex.: <span class="formula">2x + 1 = 9</span>.</p>'+
+      '<p>Pense numa <b>balança em equilíbrio</b>: o que fazemos de um lado, temos de fazer do outro. Por isso valem dois princípios:</p>'+
+      '<div class="caixa-formula"><b>Princípio aditivo:</b> somar ou subtrair o mesmo número dos dois lados.<br><b>Princípio multiplicativo:</b> multiplicar ou dividir os dois lados pelo mesmo número (não nulo).</div>'+
+      '<p>Na prática, usamos a <b>operação inversa</b>: adição ↔ subtração; multiplicação ↔ divisão. A <b>raiz (ou solução)</b> é o valor que torna a igualdade verdadeira.</p>'+
+      '<div class="exemplo"><b>Exemplo:</b> x + 8 = 11 → x = 11 − 8 → <b>x = 3</b>. Conferindo: 3 + 8 = 11 ✔</div>'+
+      '<div class="pegadinha"><b>Cuidado!</b> em 3x = 12 dividimos por 3 (x = 4). Não some: x não é 9!</div>',
+    perguntas:[
+      {enun:"Resolva a equação 2x + 5 = 17 mostrando o passo a passo, e confira a resposta substituindo o valor. (Exercício novo — não está no texto.)",
+       modelo:"2x = 17 − 5 → 2x = 12 → x = 12 ÷ 2 → x = 6. Conferindo: 2·6 + 5 = 17 ✔",
+       chk:["Minha resposta passou o 5 subtraindo e depois dividiu por 2?","Minha resposta conferiu substituindo (2·6 + 5 = 17)?"]},
+      {enun:"Crie uma equação do 1º grau cuja solução seja x = 3 e mostre que ela funciona.",
+       modelo:"Resposta pessoal. Exemplo: 5x − 1 = 14. Conferindo: 5·3 − 1 = 15 − 1 = 14 ✔",
+       chk:["Minha equação tem sinal de igual e uma incógnita?","Substituí x = 3 e a igualdade deu certo?"]},
+      {enun:"Explique, como se fosse para um colega que faltou à aula, a ideia da balança para resolver equações.",
+       modelo:"A equação é como uma balança em equilíbrio: os dois lados valem o mesmo. Se eu somar, subtrair, multiplicar ou dividir de um lado, tenho de fazer o mesmo do outro, senão a balança desequilibra. Fazendo isso, vou isolando o x até descobrir seu valor.",
+       chk:["Minha explicação falou do equilíbrio entre os dois lados?","Minha explicação disse que a mesma operação vale para os dois lados?"]}
+    ],
+    questoes:[
+      {enun:"Qual das opções é uma equação?", alts:["3 + 5 = 8","2x + 1 = 9","x + 2","5 > 3"], correta:1},
+      {enun:"Na equação 4y + 12 = 25, qual é a incógnita?", alts:["4","y","12","25"], correta:1},
+      {enun:"Resolva: x + 8 = 11", alts:["x = 3","x = 19","x = 8","x = 4"], correta:0},
+      {enun:"Resolva: 2y = 14", alts:["y = 7","y = 12","y = 28","y = 16"], correta:0},
+      {enun:"Resolva: x − 5 = 10", alts:["x = 5","x = 15","x = 50","x = 2"], correta:1},
+      {enun:"Resolva: 3x = 12", alts:["x = 4","x = 9","x = 36","x = 15"], correta:0}
+    ]
+  },
+  {
+    cap:"Capítulo 12 — Equações do 1º grau",
+    titulo:"Incógnita nos dois lados e problemas",
+    leitura:
+      '<p>Quando a incógnita aparece <b>nos dois lados</b> da igualdade, juntamos as letras de um lado e os números do outro (lembrando de <span class="destaque">trocar o sinal</span> ao mudar de lado).</p>'+
+      '<div class="exemplo"><b>Exemplo:</b> 5x = 3x + 8 → 5x − 3x = 8 → 2x = 8 → <b>x = 4</b>.</div>'+
+      '<p>Se sobrar <b>−x</b>, multiplicamos tudo por (−1) para achar x. A resposta vai no <b>conjunto solução S</b>. O <b>conjunto universo U</b> diz quais números valem (N, Z ou Q). Se a raiz não estiver em U, o conjunto fica <b>vazio</b>: S = { } ou S = ∅.</p>'+
+      '<div class="exemplo"><b>Problema (livro):</b> um parque cobra R$ 54 de entrada + R$ 12 por brinquedo. Quem gastou R$ 150 usou quantos? 54 + 12x = 150 → 12x = 96 → <b>x = 8 brinquedos</b>.</div>'+
+      '<div class="pegadinha"><b>Cuidado!</b> nunca escreva o conjunto vazio como S = {0}. O certo é S = { } ou S = ∅.</div>',
+    perguntas:[
+      {enun:"Resolva 7x = 4x + 15 mostrando cada passo. (Exercício novo — não está no texto.)",
+       modelo:"7x − 4x = 15 → 3x = 15 → x = 15 ÷ 3 → x = 5.",
+       chk:["Minha resposta juntou as letras de um lado (7x − 4x)?","Minha resposta chegou em x = 5?"]},
+      {enun:"Monte a equação e resolva: uma lanchonete cobra R$ 8 pelo lanche mais R$ 2 por cada adicional. Um cliente pagou R$ 18. Quantos adicionais ele pediu?",
+       modelo:"8 + 2x = 18 → 2x = 18 − 8 = 10 → x = 5 adicionais.",
+       chk:["Minha resposta montou a equação 8 + 2x = 18?","Minha resposta achou x = 5?"]},
+      {enun:"Explique com suas palavras o que fazer quando a resolução termina em −x = número, e o que significa escrever S = ∅.",
+       modelo:"Se sobrar −x, multiplico os dois lados por (−1) para achar x. Escrever S = ∅ (ou S = { }) significa que o conjunto solução é vazio: nenhum valor do conjunto universo serve como raiz. Nunca se escreve S = {0} para isso, porque {0} é um conjunto com o número zero dentro.",
+       chk:["Minha resposta disse que multiplica tudo por (−1)?","Minha resposta explicou que ∅ é \"nenhuma solução\" (e não o zero)?"]}
+    ],
+    questoes:[
+      {enun:"Resolva: 5x = 3x + 8", alts:["x = 2","x = 4","x = 8","x = 1"], correta:1},
+      {enun:'Qual equação representa "o dobro de um número mais 3 é igual a 11"?', alts:["2x + 3 = 11","x + 2 = 11","3x = 11","2 + x = 11"], correta:0},
+      {enun:"Resolva: 2x + 3 = 11", alts:["x = 4","x = 7","x = 5","x = 8"], correta:0},
+      {enun:"A equação x + 3 = 1, com U = N (naturais), tem conjunto solução:", alts:["S = {−2}","S = { } (vazio)","S = {2}","S = {0}"], correta:1},
+      {enun:"Um parque cobra R$ 50 de entrada + R$ 10 por brinquedo. Quem gastou R$ 110 usou quantos brinquedos?", alts:["5","6","11","60"], correta:1},
+      {enun:"Numa equação do 1º grau, o expoente da incógnita é:", alts:["0","1","2","3"], correta:1}
+    ]
+  }
+];
+
+/* ====== ESTADO / SALVAMENTO ====== */
+var CHAVE = "mat7_prova1009_leitura_v2";
+var memoria = {}; // reserva se localStorage falhar
+var estado = { desbloqueada:1, secoes:{}, perg:{} };
+
+function lerArmazenado(){
+  try{ var s = localStorage.getItem(CHAVE); return s ? JSON.parse(s) : null; }
+  catch(e){ return memoria[CHAVE] ? JSON.parse(memoria[CHAVE]) : null; }
+}
+function salvar(){
+  estado.data = new Date().toLocaleString('pt-BR');
+  var txt = JSON.stringify(estado);
+  try{ localStorage.setItem(CHAVE, txt); }
+  catch(e){ memoria[CHAVE] = txt; }
+  atualizarInfoSalvo();
+}
+function atualizarInfoSalvo(){
+  document.getElementById('infoSalvo').textContent =
+    estado.data ? ("💾 Último salvamento: " + estado.data) : "Seu progresso é salvo automaticamente neste computador.";
+}
+function pergEstado(idx){
+  if(!estado.perg[idx]) estado.perg[idx] = { feito:false, resp:["","",""], transcrita:[false,false,false], tentou:[null,null,null], chk:[[],[],[]] };
+  return estado.perg[idx];
+}
+
+/* ====== ANTICÓPIA (regra 2026-09-07) ====== */
+function normalizar(t){
+  return (t||"").toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9\s]/g,' ')
+    .replace(/\s+/g,' ').trim();
+}
+function palavras(t){ var n=normalizar(t); return n? n.split(' ') : []; }
+function textoDoBloco(sec){
+  var d=document.createElement('div'); d.innerHTML=sec.leitura;
+  return d.textContent||"";
+}
+/* melhor comprimento de sequência comum começando em R[i] contra qualquer posição de T */
+function melhorRunPorPosicao(R, T){
+  var best = new Array(R.length);
+  for(var i=0;i<R.length;i++) best[i]=0;
+  for(var j=0;j<T.length;j++){
+    for(var i=0;i<R.length;i++){
+      if(R[i]===T[j]){
+        var l=0;
+        while(i+l<R.length && j+l<T.length && R[i+l]===T[j+l]) l++;
+        if(l>best[i]) best[i]=l;
+      }
+    }
+  }
+  return best;
+}
+/* remove de R os trechos de 4+ palavras iguais ao enunciado (citar a pergunta não é cópia) */
+function descontarPergunta(R, Q){
+  var best = melhorRunPorPosicao(R, Q);
+  var manter = new Array(R.length);
+  for(var i=0;i<R.length;i++) manter[i]=true;
+  var i=0;
+  while(i<R.length){
+    if(best[i]>=4){ for(var k=i;k<i+best[i];k++) manter[k]=false; i+=best[i]; }
+    else i++;
+  }
+  var out=[]; for(var m=0;m<R.length;m++) if(manter[m]) out.push(R[m]);
+  return out;
+}
+function ehTranscricao(resposta, enunciado, textoBloco){
+  var R = palavras(resposta);
+  if(R.length<6) return false;
+  var R2 = descontarPergunta(R, palavras(enunciado));
+  if(R2.length<5) return false;
+  var T = palavras(textoBloco);
+  var best = melhorRunPorPosicao(R2, T);
+  var max=0, cobertas=0, i=0;
+  while(i<R2.length){
+    if(best[i]>max) max=best[i];
+    if(best[i]>=5){ cobertas+=best[i]; i+=best[i]; }
+    else i++;
+  }
+  if(max>=8) return true;
+  if(cobertas/R2.length>0.6) return true;
+  return false;
+}
+
+/* ====== RENDER ====== */
+var cont = document.getElementById('secoes');
+var mapaEl = document.getElementById('mapa');
+
+function limite(n){ return Math.ceil(0.7*n); }
+function statusEstacao(idx, sec){
+  /* '' = incompleta | 'ok' = tudo certo | 'rev' = concluída mas para revisar */
+  var pg = estado.perg[idx];
+  var quiz = estado.secoes[idx];
+  if(!pg || !pg.feito || !quiz || !quiz.pass) return '';
+  var rev = false;
+  for(var q=0;q<3;q++){
+    if(pg.transcrita[q]) rev=true;
+    var chk = pg.chk[q]||[];
+    for(var p=0;p<sec.perguntas[q].chk.length;p++){ if(chk[p]==='nao') rev=true; if(chk[p]===undefined||chk[p]===null) rev=true; }
+  }
+  return rev? 'rev' : 'ok';
+}
+
+function render(){
+  cont.innerHTML = "";
+  mapaEl.innerHTML = "";
+  SECOES.forEach(function(sec, i){
+    var idx = i+1;
+    var quizFeito = estado.secoes[idx] && estado.secoes[idx].pass;
+    var pg = estado.perg[idx];
+    var pergFeito = pg && pg.feito;
+    var feita = quizFeito && pergFeito;
+    var liberada = idx <= estado.desbloqueada;
+
+    // mapa
+    var stt = statusEstacao(idx, sec);
+    var m = document.createElement('span');
+    m.className = "estacao" + (feita? (stt==='rev'? " rev":" ok") : (liberada? " ativa":""));
+    m.textContent = "Estação " + idx + (feita? (stt==='rev'? " 🔁":" ✓") : "");
+    mapaEl.appendChild(m);
+
+    var div = document.createElement('div');
+    div.className = "secao" + (liberada? "" : " travada");
+    div.setAttribute('data-idx', idx);
+
+    var cab = document.createElement('div');
+    cab.className = "secao-cab" + (feita? " ok":"");
+    cab.innerHTML =
+      '<div class="num">'+(feita? "✓" : idx)+'</div>'+
+      '<div><div class="cap">'+sec.cap+'</div><h2>'+sec.titulo+'</h2></div>'+
+      '<div class="cadeado">'+(liberada? (feita? (stt==='rev'?"🔁":"✅") :"📖") : "🔒")+'</div>';
+    div.appendChild(cab);
+
+    var corpo = document.createElement('div');
+    corpo.className = "secao-corpo" + (liberada && !feita && idx===estado.desbloqueada ? " aberta":"");
+    corpo.id = "corpo"+idx;
+
+    if(liberada){
+      var html = '<div class="leitura">'+sec.leitura+'</div>';
+
+      /* ---- 3 perguntas de campo livre ---- */
+      html += '<div class="escrever"><h3>✍️ Escreva com suas palavras — 3 perguntas</h3>'+
+              '<p class="obj">Responda escrevendo (nada de copiar do texto!). Depois de conferir, aparece a resposta modelo e a autoavaliação. Só então a fixação abre.</p>';
+      sec.perguntas.forEach(function(p, qi){
+        var st = pg || null;
+        var val = st? (st.resp[qi]||"") : "";
+        var lida = pergFeito && !(st && st.transcrita[qi]);
+        html += '<div class="perg'+(st && st.transcrita[qi]? ' vermelha':'')+'" id="perg'+idx+'_'+qi+'">'+
+                '<p class="enun">'+(qi+1)+') '+p.enun+'</p>'+
+                '<textarea id="ta'+idx+'_'+qi+'" '+(lida? 'readonly':'')+' placeholder="Escreva aqui a sua resposta..."></textarea>'+
+                '<div class="aviso-copia" id="cop'+idx+'_'+qi+'">⚠️ Boa parte da sua resposta está igual ao texto. Tente reescrever com as suas palavras — explique como se fosse para um amigo, sem olhar o texto. Pode ficar mais curto e simples: o que vale é ser SEU. Depois clique em Conferir de novo.</div>'+
+                '<div class="marca-vermelha" id="verm'+idx+'_'+qi+'">🔴 Esta resposta ficou marcada porque continuou igual ao texto. Você pode reescrever com suas palavras a qualquer momento — aí a marca some sozinha.</div>'+
+                '<div class="modelo-resp" id="mod'+idx+'_'+qi+'"><b>Resposta modelo:</b> '+p.modelo+'</div>'+
+                '<div class="chk" id="chk'+idx+'_'+qi+'"></div>'+
+                '</div>';
+      });
+      html += '<button class="btn" id="btnPerg'+idx+'" '+(pergFeito? 'disabled':'')+'>'+(pergFeito? 'Respostas conferidas ✔':'✔️ Conferir as 3 respostas')+'</button>';
+      html += '<div class="status-bloco" id="stb'+idx+'"></div>';
+      html += '</div>';
+
+      /* ---- fixação (quiz) ---- */
+      html += '<div class="fixacao"><h3>✏️ Fixação — Estação '+idx+'</h3>'+
+              '<p class="obj">'+(pergFeito? '' : '🔒 A fixação abre depois que você conferir as 3 respostas escritas. ')+
+              'Você precisa de pelo menos '+limite(sec.questoes.length)+' de '+sec.questoes.length+' acertos (70%) para liberar a próxima estação.</p>';
+      sec.questoes.forEach(function(q, qi){
+        html += '<div class="questao" id="q'+idx+'_'+qi+'"><p class="enun">'+(qi+1)+') '+q.enun+'</p><ul class="alts">';
+        q.alts.forEach(function(a, ai){
+          html += '<li><label><input type="radio" name="q'+idx+'_'+qi+'" value="'+ai+'" '+(pergFeito? '':'disabled')+'><span>'+a+'</span></label></li>';
+        });
+        html += '</ul></div>';
+      });
+      html += '<button class="btn" id="btnSec'+idx+'" '+(pergFeito? '':'disabled')+'>Conferir estação '+idx+'</button>';
+      html += '<div class="resultado-sec" id="res'+idx+'"></div>';
+      html += '</div>';
+      corpo.innerHTML = html;
+    } else {
+      corpo.innerHTML = '<div class="leitura"><p style="color:var(--cinza)">🔒 Conclua a estação anterior (respostas escritas + 70% na fixação) para liberar esta leitura.</p></div>';
+    }
+    div.appendChild(corpo);
+    cont.appendChild(div);
+
+    cab.addEventListener('click', function(){
+      if(!liberada) return;
+      corpo.classList.toggle('aberta');
+    });
+
+    if(liberada){
+      montarPerguntas(idx, sec);
+      var btn = document.getElementById('btnSec'+idx);
+      if(quizFeito){ aplicarSalvo(idx, sec); }
+      if(btn){ btn.addEventListener('click', function(){ conferir(idx, sec, btn); }); }
+    }
+  });
+  atualizarProgresso();
+  montarRevisar();
+}
+
+/* ---- perguntas: valores, listeners, modelo/checklist ---- */
+function montarPerguntas(idx, sec){
+  var pg = estado.perg[idx];
+  sec.perguntas.forEach(function(p, qi){
+    var ta = document.getElementById('ta'+idx+'_'+qi);
+    if(!ta) return;
+    if(pg) ta.value = pg.resp[qi]||"";
+    ta.addEventListener('input', function(){
+      var st = pergEstado(idx);
+      st.resp[qi] = ta.value;
+      /* reescrever com palavras próprias apaga a marca vermelha */
+      if(st.transcrita[qi] && !ehTranscricao(ta.value, p.enun, textoDoBloco(sec))){
+        st.transcrita[qi] = false;
+        document.getElementById('perg'+idx+'_'+qi).classList.remove('vermelha');
+        document.getElementById('verm'+idx+'_'+qi).classList.remove('on');
+        montarRevisar();
+      }
+      salvar();
+    });
+    if(pg && pg.feito){
+      mostrarModelo(idx, qi, sec);
+      if(pg.transcrita[qi]) document.getElementById('verm'+idx+'_'+qi).classList.add('on');
+    }
+  });
+  var bp = document.getElementById('btnPerg'+idx);
+  if(bp && !(pg && pg.feito)){
+    bp.addEventListener('click', function(){ conferirPerguntas(idx, sec); });
+  }
+  atualizarStatusBloco(idx, sec);
+}
+
+function conferirPerguntas(idx, sec){
+  var st = pergEstado(idx);
+  var texto = textoDoBloco(sec);
+  /* 1) as 3 preenchidas? */
+  for(var q=0;q<3;q++){
+    if((st.resp[q]||"").trim().length<3){
+      mostrarModalInfo("Responda as 3 perguntas (pelo menos 3 letras em cada) antes de conferir.");
+      return;
+    }
+  }
+  /* 2) anticópia em dois degraus */
+  var bloqueou=false;
+  for(var q2=0;q2<3;q2++){
+    var cop = document.getElementById('cop'+idx+'_'+q2);
+    cop.classList.remove('on');
+    if(ehTranscricao(st.resp[q2], sec.perguntas[q2].enun, texto)){
+      if(st.tentou[q2]===null){
+        /* 1ª detecção: não aceita ainda */
+        st.tentou[q2] = st.resp[q2];
+        cop.classList.add('on');
+        bloqueou=true;
+      } else {
+        /* 2ª tentativa: aceita, mas fica vermelha */
+        st.transcrita[q2] = true;
+      }
+    }
+  }
+  salvar();
+  if(bloqueou){
+    var el = document.querySelector('#corpo'+idx+' .aviso-copia.on');
+    if(el) el.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  /* 3) aceitar */
+  st.feito = true;
+  st.quando = new Date().toLocaleString('pt-BR');
+  salvar();
+  render();
+  var c = document.getElementById('corpo'+idx); if(c) c.classList.add('aberta');
+  var m0 = document.getElementById('mod'+idx+'_0');
+  if(m0) m0.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function mostrarModelo(idx, qi, sec){
+  var pg = estado.perg[idx];
+  document.getElementById('mod'+idx+'_'+qi).classList.add('on');
+  var chkEl = document.getElementById('chk'+idx+'_'+qi);
+  chkEl.classList.add('on');
+  var p = sec.perguntas[qi];
+  var html = '<div style="font-size:13px;color:var(--ciano);margin-bottom:4px;">🪞 Autoavaliação — compare com o modelo:</div>';
+  p.chk.forEach(function(item, pi){
+    var v = (pg.chk[qi]||[])[pi];
+    html += '<div class="item"><span>'+item+'</span>'+
+            '<button class="sim'+(v==='sim'?' on':'')+'" data-e="'+idx+'" data-q="'+qi+'" data-p="'+pi+'" data-v="sim">Sim</button>'+
+            '<button class="nao'+(v==='nao'?' on':'')+'" data-e="'+idx+'" data-q="'+qi+'" data-p="'+pi+'" data-v="nao">Não</button></div>';
+  });
+  chkEl.innerHTML = html;
+  chkEl.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click', function(){
+      var e=parseInt(b.getAttribute('data-e')), q=parseInt(b.getAttribute('data-q')), pp=parseInt(b.getAttribute('data-p'));
+      var st = pergEstado(e);
+      if(!st.chk[q]) st.chk[q]=[];
+      st.chk[q][pp] = b.getAttribute('data-v');
+      salvar();
+      mostrarModelo(e, q, SECOES[e-1]);
+      atualizarStatusBloco(e, SECOES[e-1]);
+      montarRevisar();
+    });
+  });
+}
+
+function atualizarStatusBloco(idx, sec){
+  var el = document.getElementById('stb'+idx);
+  if(!el) return;
+  var pg = estado.perg[idx];
+  if(!pg || !pg.feito){ el.className='status-bloco'; return; }
+  var completo=true, rev=false;
+  for(var q=0;q<3;q++){
+    if(pg.transcrita[q]) rev=true;
+    for(var p=0;p<sec.perguntas[q].chk.length;p++){
+      var v=(pg.chk[q]||[])[p];
+      if(v===undefined||v===null) completo=false;
+      if(v==='nao') rev=true;
+    }
+  }
+  if(!completo){ el.className='status-bloco rev'; el.textContent='🪞 Complete a autoavaliação (Sim/Não) de cada pergunta acima.'; }
+  else if(rev){ el.className='status-bloco rev'; el.textContent='🔁 Este bloco entrou na lista "para revisar" (há respostas marcadas ou pontos "Não").'; }
+  else { el.className='status-bloco okk'; el.textContent='✅ Bloco em dia! Agora faça a fixação abaixo.'; }
+}
+
+/* ---- lista "para revisar" no fim ---- */
+function montarRevisar(){
+  var box = document.getElementById('revisar');
+  var ul = document.getElementById('revisarLista');
+  var itens = [];
+  SECOES.forEach(function(sec, i){
+    var idx=i+1, pg=estado.perg[idx];
+    if(!pg || !pg.feito) return;
+    for(var q=0;q<3;q++){
+      if(pg.transcrita[q]) itens.push('Estação '+idx+', pergunta '+(q+1)+': resposta ficou igual ao texto — reescreva com suas palavras.');
+      for(var p=0;p<sec.perguntas[q].chk.length;p++){
+        if((pg.chk[q]||[])[p]==='nao') itens.push('Estação '+idx+', pergunta '+(q+1)+': faltou — "'+sec.perguntas[q].chk[p]+'"');
+      }
+    }
+  });
+  if(itens.length){
+    box.style.display='block';
+    ul.innerHTML = itens.map(function(t){return '<li>'+t+'</li>';}).join('');
+  } else {
+    box.style.display='none'; ul.innerHTML='';
+  }
+}
+
+/* ---- fixação (quiz) ---- */
+function conferir(idx, sec, btn){
+  var pg = estado.perg[idx];
+  if(!pg || !pg.feito){
+    mostrarModalInfo("Primeiro escreva e confira as 3 respostas da estação.");
+    return;
+  }
+  var acertos = 0, respondidas = 0;
+  var respostas = [];
+  sec.questoes.forEach(function(q, qi){
+    var sel = document.querySelector('input[name="q'+idx+'_'+qi+'"]:checked');
+    respostas.push(sel? parseInt(sel.value):null);
+    if(sel) respondidas++;
+    if(sel && parseInt(sel.value)===q.correta) acertos++;
+  });
+  if(respondidas < sec.questoes.length){
+    var res0 = document.getElementById('res'+idx);
+    res0.className = "resultado-sec fail";
+    res0.textContent = "Responda todas as "+sec.questoes.length+" questões antes de conferir.";
+    return;
+  }
+  var pass = acertos >= limite(sec.questoes.length);
+  estado.secoes[idx] = { pass:pass, acertos:acertos, respostas:respostas };
+  if(pass && idx===estado.desbloqueada && idx < SECOES.length){
+    estado.desbloqueada = idx+1;
+  }
+  salvar();
+  render();
+  var alvo = document.getElementById('res'+idx) || document.getElementById('corpo'+idx);
+  aplicarSalvo(idx, sec);
+  mostrarResultado(idx, sec, acertos, pass);
+  if(alvo) alvo.scrollIntoView({behavior:'smooth', block:'center'});
+  verificarFim();
+}
+
+function aplicarSalvo(idx, sec){
+  var st = estado.secoes[idx];
+  if(!st) return;
+  var corpo = document.getElementById('corpo'+idx);
+  if(!corpo) return;
+  sec.questoes.forEach(function(q, qi){
+    var qbox = document.getElementById('q'+idx+'_'+qi);
+    if(!qbox) return;
+    var labels = qbox.querySelectorAll('label');
+    var marc = st.respostas? st.respostas[qi] : null;
+    labels.forEach(function(lab, ai){
+      var inp = lab.querySelector('input');
+      inp.disabled = true;
+      if(marc!==null && ai===marc) inp.checked = true;
+      if(ai===q.correta){
+        lab.classList.add('certa');
+        if(!lab.querySelector('.marca')){ var t=document.createElement('span'); t.className='marca ok'; t.textContent='Correta'; lab.appendChild(t);}
+      }
+      if(marc!==null && marc!==q.correta && ai===marc){
+        lab.classList.add('errada');
+        if(!lab.querySelector('.marca')){ var t2=document.createElement('span'); t2.className='marca x'; t2.textContent='Você marcou'; lab.appendChild(t2);}
+      }
+    });
+  });
+  var btn = document.getElementById('btnSec'+idx);
+  if(btn){ btn.disabled = true; btn.textContent = st.pass? "Estação concluída ✔" : "Conferido"; }
+  mostrarResultado(idx, sec, st.acertos, st.pass);
+}
+
+function mostrarResultado(idx, sec, acertos, pass){
+  var res = document.getElementById('res'+idx);
+  if(!res) return;
+  if(pass){
+    res.className = "resultado-sec pass";
+    res.textContent = "✅ Muito bem! Você acertou "+acertos+" de "+sec.questoes.length+". Próxima estação liberada!";
+  } else {
+    res.className = "resultado-sec fail";
+    res.innerHTML = "❌ Você acertou "+acertos+" de "+sec.questoes.length+". Faltou chegar a "+limite(sec.questoes.length)+". Releia a estação e tente de novo. "+
+      '<br><button class="btn refazer" id="ref'+idx+'" style="margin-top:8px">🔄 Refazer estação '+idx+'</button>';
+    var rb = document.getElementById('ref'+idx);
+    if(rb) rb.addEventListener('click', function(){
+      delete estado.secoes[idx];
+      salvar(); render();
+      var c = document.getElementById('corpo'+idx); if(c) c.classList.add('aberta');
+    });
+  }
+}
+
+function atualizarProgresso(){
+  var feitas = 0;
+  for(var k in estado.secoes){ if(estado.secoes[k] && estado.secoes[k].pass && estado.perg[k] && estado.perg[k].feito) feitas++; }
+  var pct = Math.round(feitas/SECOES.length*100);
+  document.getElementById('progCheio').style.width = pct+"%";
+  document.getElementById('progTxt').textContent = feitas+" de "+SECOES.length+" estações concluídas ("+pct+"%)";
+}
+
+function verificarFim(){
+  var feitas = 0;
+  for(var k in estado.secoes){ if(estado.secoes[k] && estado.secoes[k].pass && estado.perg[k] && estado.perg[k].feito) feitas++; }
+  var fim = document.getElementById('final');
+  if(feitas===SECOES.length){ fim.classList.add('on'); montarRevisar(); }
+  else{ fim.classList.remove('on'); }
+}
+
+/* ====== RELÓGIO DE ESTUDO (regra 2026-09-07) ====== */
+var BLOCO_ATUAL = null;
+var RELOGIO = (function(){
+  var KEY_T = CHAVE + "_tempo";
+  var SESSAO = 45*60, TRAVA = 5*60, INATIVO = 3*60;
+  var memT = {};
+  function lerT(){ try{ var s=localStorage.getItem(KEY_T); return s?JSON.parse(s):null; }catch(e){ return memT.v? JSON.parse(memT.v):null; } }
+  var st = lerT() || { total:0, ativo:0, sessoes:[], porBloco:{} };
+  if(!st.sessoes) st.sessoes=[]; if(!st.porBloco) st.porBloco={};
+  var ligado=false, inativo=false, trava=false;
+  var sessAtivo=0, travaResta=0, ultAtiv=Date.now(), tick=null, salvaCada=0;
+
+  function gravarT(){ var t=JSON.stringify(st); try{ localStorage.setItem(KEY_T, t); }catch(e){ memT.v=t; } }
+  function fmt(s){ s=Math.max(0,Math.floor(s)); return Math.floor(s/60)+":"+("0"+(s%60)).slice(-2); }
+  function mostra(id,on){ var e=document.getElementById(id); if(e) e.classList.toggle('on', !!on); }
+  function renderRel(){
+    var t=document.getElementById('relTempo'); if(t) t.textContent=fmt(st.ativo);
+    var i=document.getElementById('relInfo');
+    if(i) i.textContent = trava? "pausa obrigatória — descanse!" : inativo? "pausado (toque para continuar)" : ligado? ("sessão: faltam "+fmt(SESSAO-sessAtivo)) : 'clique em "Começar a estudar"';
+  }
+  function atividade(ev){
+    if(!ligado || trava) return;
+    ultAtiv = Date.now();
+    if(inativo){ inativo=false; mostra('relPausa', false); renderRel(); }
+    if(ev && ev.target && ev.target.closest){
+      var s = ev.target.closest('.secao');
+      if(s && s.getAttribute('data-idx')) BLOCO_ATUAL = s.getAttribute('data-idx');
+    }
+  }
+  function passo(){
+    if(!ligado) return;
+    st.total++;
+    if(trava){
+      travaResta--;
+      var e=document.getElementById('relTravaConta'); if(e) e.textContent=fmt(travaResta);
+      if(travaResta<=0){ trava=false; sessAtivo=0; mostra('relTrava', false); novaSessao(); }
+    } else if(!inativo){
+      if(Date.now()-ultAtiv > INATIVO*1000){ inativo=true; mostra('relPausa', true); }
+      else{
+        st.ativo++; sessAtivo++;
+        if(BLOCO_ATUAL) st.porBloco[BLOCO_ATUAL] = (st.porBloco[BLOCO_ATUAL]||0)+1;
+        if(sessAtivo>=SESSAO){ trava=true; travaResta=TRAVA; mostra('relTrava', true); }
+      }
+    }
+    salvaCada++; if(salvaCada>=5){ salvaCada=0; gravarT(); }
+    renderRel();
+  }
+  function novaSessao(){ st.sessoes.push({inicio:new Date().toISOString()}); gravarT(); }
+  function fechaSessao(botao){
+    var s=st.sessoes[st.sessoes.length-1];
+    if(s && !s.fim){ s.fim=new Date().toISOString(); if(botao) s.terminadaPeloBotao=true; }
+    gravarT();
+  }
+  function comecar(){
+    ligado=true; inativo=false; ultAtiv=Date.now(); sessAtivo=0;
+    document.body.classList.remove('rel-off');
+    mostra('relInicio', false); mostra('relFim', false);
+    novaSessao();
+    if(!tick) tick=setInterval(passo, 1000);
+    renderRel();
+  }
+  ['click','keydown','scroll','input','touchstart'].forEach(function(evt){
+    document.addEventListener(evt, atividade, true);
+  });
+  window.addEventListener('beforeunload', function(){ if(ligado) fechaSessao(false); gravarT(); });
+  document.getElementById('relComecar').addEventListener('click', comecar);
+  document.getElementById('relDeNovo').addEventListener('click', comecar);
+  document.getElementById('relTerminar').addEventListener('click', function(){ if(ligado && !trava) mostra('relConfirma', true); });
+  document.getElementById('relConfirmaNao').addEventListener('click', function(){ mostra('relConfirma', false); });
+  document.getElementById('relConfirmaSim').addEventListener('click', function(){
+    mostra('relConfirma', false);
+    ligado=false; fechaSessao(true); gravarT();
+    var r=document.getElementById('relFimResumo');
+    if(r) r.innerHTML = "Tempo ativo de estudo: <b>"+fmt(st.ativo)+"</b> (tempo total: "+fmt(st.total)+"). Muito bem! Seus pais podem ver o relatório na página inicial.";
+    document.body.classList.add('rel-off');
+    mostra('relFim', true);
+  });
+  renderRel();
+  return {
+    dados: function(){ return st; },
+    gravar: gravarT,
+    zerar: function(){ st={total:0,ativo:0,sessoes:[],porBloco:{}}; try{ localStorage.removeItem(KEY_T); }catch(e){ delete memT.v; } gravarT(); renderRel(); },
+    importar: function(d){ if(d){ st=d; if(!st.sessoes)st.sessoes=[]; if(!st.porBloco)st.porBloco={}; gravarT(); renderRel(); } },
+    _debug: function(o){
+      o=o||{};
+      if(o.restante!=null) sessAtivo = SESSAO - o.restante;
+      if(o.trava!=null){ trava=true; travaResta=o.trava; mostra('relTrava', true); }
+      if(o.inativo!=null) ultAtiv = Date.now() - o.inativo*1000;
+      renderRel();
+    }
+  };
+})();
+
+/* ====== BOTÕES DE SALVAMENTO ====== */
+document.getElementById('btnExport').addEventListener('click', function(){
+  var pacote = { material:"leitura", dados:estado, tempo:RELOGIO.dados() };
+  var blob = new Blob([JSON.stringify(pacote,null,2)], {type:"application/json"});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = "leitura_matematica_7ano.json";
+  a.click();
+});
+document.getElementById('btnImport').addEventListener('click', function(){ document.getElementById('fileImport').click(); });
+document.getElementById('fileImport').addEventListener('change', function(e){
+  var f = e.target.files[0]; if(!f) return;
+  var r = new FileReader();
+  r.onload = function(){
+    try{
+      var d = JSON.parse(r.result);
+      if(d && d.dados){ estado = d.dados; if(d.tempo) RELOGIO.importar(d.tempo); }
+      else { estado = d; }
+      if(!estado.secoes) estado.secoes={};
+      if(!estado.perg) estado.perg={};
+      if(!estado.desbloqueada) estado.desbloqueada=1;
+      salvar(); render(); verificarFim();
+    }
+    catch(err){ mostrarModalInfo("Não consegui ler esse arquivo."); }
+  };
+  r.readAsText(f);
+});
+
+/* modal para Zerar (sem confirm nativo) */
+var modalFundo = document.getElementById('modalFundo');
+document.getElementById('btnZerar').addEventListener('click', function(){
+  document.getElementById('modalTxt').textContent = "Tem certeza que quer apagar todo o seu progresso desta leitura (incluindo o tempo de estudo)?";
+  document.getElementById('modalOk').style.display="inline-block";
+  document.getElementById('modalCancel').textContent="Não";
+  modalFundo.classList.add('on');
+  document.getElementById('modalOk').onclick = function(){
+    estado = { desbloqueada:1, secoes:{}, perg:{} };
+    try{ localStorage.removeItem(CHAVE);}catch(e){ delete memoria[CHAVE]; }
+    RELOGIO.zerar();
+    salvar(); render(); verificarFim();
+    modalFundo.classList.remove('on');
+  };
+});
+document.getElementById('modalCancel').addEventListener('click', function(){ modalFundo.classList.remove('on'); });
+function mostrarModalInfo(txt){
+  document.getElementById('modalTxt').textContent = txt;
+  document.getElementById('modalOk').style.display="none";
+  document.getElementById('modalCancel').textContent="Fechar";
+  modalFundo.classList.add('on');
+}
+
+/* ====== INÍCIO ====== */
+var salvo = lerArmazenado();
+if(salvo){ estado = salvo; if(!estado.secoes) estado.secoes={}; if(!estado.perg) estado.perg={}; if(!estado.desbloqueada) estado.desbloqueada=1; }
+render();
+atualizarInfoSalvo();
+verificarFim();
+</script>
+</body>
+</html>
