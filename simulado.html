@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulado — Matemática 7º ano | Central de Engenharia</title>
+<style>
+  :root{
+    --bg:#0b1f33; --bg2:#0e2740; --painel:#10314f; --linha:#1d4b74;
+    --ciano:#4cc9f0; --branco:#eaf4fb; --cinza:#9fbdd6;
+    --verde:#37d67a; --verde-bg:#0f3a2a; --vermelho:#e53935;
+    --cinzabox:#33465a; --cinzabg:#1a2b3d; --amarelo:#ffd23f;
+    --azulescuro:#0a1a2b; --vermelhobar:#e53935; --laranja:#ff9f45;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; padding:0; font-family:"Segoe UI",Arial,sans-serif; color:var(--branco);
+    background:
+      linear-gradient(rgba(11,31,51,.94),rgba(11,31,51,.97)),
+      repeating-linear-gradient(0deg, transparent 0 39px, rgba(76,201,240,.08) 39px 40px),
+      repeating-linear-gradient(90deg, transparent 0 39px, rgba(76,201,240,.08) 39px 40px),
+      var(--bg);
+    line-height:1.6;}
+  .wrap{max-width:860px; margin:0 auto; padding:44px 16px 80px;}
+  body.rel-off .wrap{filter:blur(7px); pointer-events:none; user-select:none;}
+  header.topo{background:var(--azulescuro); border:1.5px solid var(--linha); border-top:none;
+    border-radius:0 0 16px 16px; padding:22px 20px; text-align:center; box-shadow:0 4px 14px rgba(0,0,0,.3);}
+  header.topo .barra{height:6px; background:var(--vermelhobar); border-radius:4px; margin:-22px -20px 16px; border-radius:0;}
+  header.topo .selo{display:inline-block; font-size:12px; letter-spacing:2px; color:var(--ciano);
+    border:1px solid var(--ciano); padding:3px 12px; border-radius:20px; margin-bottom:8px; text-transform:uppercase;}
+  header.topo h1{margin:4px 0; font-size:24px; color:#fff;}
+  header.topo p{margin:0; color:var(--cinza); font-size:14px;}
+  .instr{background:var(--painel); border:1px solid var(--linha); border-radius:12px; padding:14px 18px; margin:18px 0; font-size:14px;}
+  .instr b{color:var(--ciano);}
+
+  .codigo-topo{display:none; background:var(--verde-bg); border:1.5px solid var(--verde); border-radius:12px;
+    padding:16px; text-align:center; margin:18px 0;}
+  .codigo-topo.on{display:block;}
+  .codigo-topo .cod{font-size:30px; font-weight:bold; color:var(--verde); letter-spacing:2px; font-family:"Consolas",monospace;}
+  .codigo-topo small{color:var(--cinza);}
+
+  .q{background:var(--bg2); border:1px solid var(--linha); border-radius:12px; padding:16px 18px; margin:0 0 16px;}
+  .q .cab{display:flex; gap:10px; align-items:center; margin-bottom:8px; flex-wrap:wrap;}
+  .q .n{font-weight:bold; color:#fff; background:var(--linha); border-radius:8px; padding:2px 10px;}
+  .q .pts{font-size:12px; color:var(--cinza);}
+  .badge{font-size:11px; font-weight:bold; padding:2px 9px; border-radius:12px; text-transform:uppercase; letter-spacing:.5px;}
+  .badge.mc{background:#1f4b6e; color:#bfe6f7;}
+  .badge.som{background:#5a3d1f; color:#ffd7a0;}
+  .badge.rom{background:#3d2a5a; color:#d9c2ff;}
+  .badge.disc{background:#5a1f3d; color:#ffc2df;}
+  .badge.cap{background:#22303f; color:var(--cinza);}
+  .q .enun{margin:0 0 12px; font-size:15.5px;}
+  .alts{list-style:none; margin:0; padding:0;}
+  .alts li{margin:7px 0;}
+  .alts label{display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--linha);
+    border-radius:10px; cursor:pointer; transition:.15s;}
+  .alts label:hover{border-color:var(--ciano); background:rgba(76,201,240,.06);}
+  .alts input{width:18px; height:18px; accent-color:var(--ciano); flex:none;}
+  textarea{width:100%; min-height:90px; background:#0a2138; color:var(--branco); border:1px solid var(--linha);
+    border-radius:10px; padding:10px; font-size:15px; font-family:inherit;}
+
+  /* gabarito */
+  label.certa{background:var(--verde-bg)!important; border-color:var(--verde)!important;}
+  label.errada{background:#3a1414!important; border-color:#e53935!important;}
+  .marca{margin-left:auto; font-size:11px; font-weight:bold; padding:2px 9px; border-radius:12px;}
+  .marca.ok{background:var(--verde); color:#04231a;}
+  .marca.x{background:#e53935; color:#fff;}
+  .coment{display:none; margin-top:10px; background:var(--cinzabg); border-left:4px solid var(--cinzabox);
+    border-radius:8px; padding:10px 14px; font-size:14px; color:#cfe0ee;}
+  .coment.on{display:block;}
+  .coment b{color:var(--amarelo);}
+  .modelo{display:none; margin-top:10px; background:var(--verde-bg); border-left:4px solid var(--verde);
+    border-radius:8px; padding:10px 14px; font-size:14px;}
+  .modelo.on{display:block;}
+  .modelo b{color:var(--verde);}
+
+  .painel-fim{background:var(--painel); border:1px solid var(--linha); border-radius:12px; padding:18px; margin-top:20px;}
+  .btn{background:linear-gradient(135deg,#e53935,#c62828); color:#fff; border:none; font-weight:bold; font-size:17px;
+    padding:14px 28px; border-radius:10px; cursor:pointer; width:100%;}
+  .btn:disabled{background:#4a5866; color:#93a6b7; cursor:not-allowed;}
+  .btn.azul{background:linear-gradient(135deg,var(--ciano),#20b6e6); color:#04283a;}
+  .btn.laranja{background:linear-gradient(135deg,var(--laranja),#ff7f2a); color:#3a1a00;}
+  #statusEnvio{font-size:13px; color:var(--cinza); text-align:center; margin-top:10px;}
+  .cod-box{display:none; margin-top:16px;}
+  .cod-box.on{display:block;}
+  .cod-box input{width:150px; text-transform:uppercase; padding:10px; border-radius:8px; border:1px solid var(--linha);
+    background:#0a2138; color:#fff; font-size:16px; font-family:"Consolas",monospace; letter-spacing:2px;}
+  .placar{display:none; text-align:center; font-size:22px; font-weight:bold; color:var(--ciano);
+    background:var(--verde-bg); border:1px solid var(--verde); border-radius:12px; padding:16px; margin-top:16px;}
+  .placar.on{display:block;}
+  .salvamento{background:var(--painel); border:1px solid var(--linha); border-radius:12px; padding:8px 14px;
+    font-size:12px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:18px 0;}
+  .salvamento .info{color:var(--cinza); flex:1; min-width:160px;}
+  .salvamento button{background:transparent; border:1px solid var(--linha); color:var(--branco); padding:6px 10px; border-radius:8px; cursor:pointer; font-size:12px;}
+  .som-somatorio{font-size:13px; color:var(--cinza); margin-top:8px;}
+  .nav{margin-top:20px; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;}
+  .nav a{background:var(--ciano); color:#04283a; text-decoration:none; font-weight:bold; padding:12px 20px; border-radius:10px;}
+  .nav a.sec{background:transparent; color:var(--ciano); border:1px solid var(--ciano);}
+  .modal-fundo{position:fixed; inset:0; background:rgba(4,12,20,.75); display:none; align-items:center; justify-content:center; z-index:50;}
+  .modal-fundo.on{display:flex;}
+  .modal{background:var(--bg2); border:1.5px solid var(--ciano); border-radius:14px; padding:22px; max-width:340px; text-align:center;}
+  .modal p{margin:0 0 16px;} .modal button{margin:0 6px; width:auto;}
+
+  /* ===== RELÓGIO DE ESTUDO ===== */
+  .rel-topo{
+    position:fixed; top:0; left:0; right:0; z-index:60;
+    background:rgba(7,27,46,.96); border-bottom:1px solid var(--linha);
+    display:flex; align-items:center; gap:10px; padding:8px 14px; font-size:14px;
+  }
+  .rel-topo #relTempo{font-family:"Consolas",monospace; font-weight:bold; color:var(--ciano); font-size:16px;}
+  .rel-topo .rel-info{color:var(--cinza); font-size:12px; flex:1;}
+  .rel-btn{background:transparent; border:1px solid var(--linha); color:var(--cinza);
+    padding:5px 10px; border-radius:8px; cursor:pointer; font-size:12px;}
+  .rel-btn:hover{border-color:var(--vermelho); color:var(--vermelho);}
+  .rel-overlay{position:fixed; inset:0; background:rgba(4,12,20,.88); display:none;
+    align-items:center; justify-content:center; z-index:70; padding:20px;}
+  .rel-overlay.on{display:flex;}
+  .rel-modal{background:var(--bg2); border:1.5px solid var(--ciano); border-radius:16px;
+    padding:30px 26px; max-width:440px; text-align:center;}
+  .rel-modal h2{margin:8px 0; color:#fff;}
+  .rel-modal p{color:var(--cinza); font-size:15px;}
+  .rel-modal .grande{font-size:46px;}
+  .rel-modal .conta{font-family:"Consolas",monospace; font-size:38px; color:var(--amarelo); font-weight:bold;}
+  .rel-modal .btn{width:auto; margin:6px;}
+</style>
+</head>
+<body class="rel-off">
+
+<!-- ===== RELÓGIO DE ESTUDO ===== -->
+<div class="rel-topo" id="relTopo">
+  <span>⏱️</span><span id="relTempo">0:00</span>
+  <span class="rel-info" id="relInfo">clique em "Começar a estudar"</span>
+  <button class="rel-btn" id="relTerminar">⏹ Terminar agora</button>
+</div>
+<div class="rel-overlay on" id="relInicio">
+  <div class="rel-modal">
+    <div class="grande">⏱️</div>
+    <h2>Hora do simulado, jovem aprendiz!</h2>
+    <p>O relógio de estudo registra quanto tempo você levou no simulado. Sessões de <b>45 minutos</b> com pausa obrigatória de 5. Se quiser parar antes, use "⏹ Terminar agora" — mas atenção: isso <b>encerra a tentativa</b>, mesmo com questões em branco.</p>
+    <button class="btn azul" id="relComecar">▶️ Começar a estudar</button>
+  </div>
+</div>
+<div class="rel-overlay" id="relPausa">
+  <div class="rel-modal">
+    <div class="grande">😴</div>
+    <h2>Estudo pausado</h2>
+    <p>Percebi que você parou um pouquinho. O relógio pausou sozinho.<br><b>Toque em qualquer lugar para continuar.</b></p>
+  </div>
+</div>
+<div class="rel-overlay" id="relTrava">
+  <div class="rel-modal">
+    <div class="grande">🧃</div>
+    <h2>Pausa obrigatória!</h2>
+    <p>Você estudou 45 minutos seguidos — muito bem! Levante, beba água e estique as pernas. O simulado volta sozinho em:</p>
+    <div class="conta" id="relTravaConta">5:00</div>
+    <p style="font-size:13px">Suas respostas estão salvas. 😉</p>
+  </div>
+</div>
+<div class="rel-overlay" id="relConfirma">
+  <div class="rel-modal">
+    <div class="grande">⏹</div>
+    <h2>Terminar agora?</h2>
+    <p id="relConfirmaTxt">Isso encerra o relógio E a sua tentativa do simulado: as questões em branco contam como não respondidas e o código sai com os acertos do que você respondeu. Tem certeza?</p>
+    <button class="btn" id="relConfirmaSim">Sim, terminar</button>
+    <button class="btn azul" id="relConfirmaNao">Continuar</button>
+  </div>
+</div>
+<div class="rel-overlay" id="relFim">
+  <div class="rel-modal">
+    <div class="grande">🏁</div>
+    <h2>Simulado encerrado</h2>
+    <p id="relFimResumo"></p>
+    <button class="btn azul" id="relDeNovo">Ver o resultado</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="topo">
+    <div class="barra"></div>
+    <span class="selo">Central de Engenharia • Simulado Oficial</span>
+    <h1>📝 Simulado — Matemática 7º ano</h1>
+    <p>Colégio Coração Feliz • Avaliação Mensal 1 (10/09/2026)<br>27 questões objetivas + 1 discursiva • Cap. 9, 10 e 12</p>
+  </header>
+
+  <div class="instr">
+    <b>Como funciona:</b> responda <b>todas</b> as questões. Ao terminar, clique em <b>Enviar</b>. Você recebe um
+    <b>código de liberação</b> (mostre para sua mãe/pai). Depois, digite o código para ver o <b>gabarito comentado</b>.
+    A questão discursiva é corrigida pelo responsável usando a resposta modelo.
+  </div>
+
+  <div class="codigo-topo" id="codigoTopo">
+    <div>Seu código de liberação:</div>
+    <div class="cod" id="codMostra">SIM-00-XX</div>
+    <small>Você acertou <b id="acertosMostra">0</b> de 27 questões objetivas.</small>
+    <div id="parcialAviso" style="display:none; color:var(--amarelo); font-size:13px; margin-top:6px;">⚠️ Tentativa encerrada pelo botão "Terminar agora" — havia questões em branco.</div>
+  </div>
+
+  <div class="salvamento">
+    <span class="info" id="infoSalvo">Suas respostas são salvas automaticamente neste computador.</span>
+    <button id="btnExport">📥 Exportar</button>
+    <button id="btnImport">📤 Importar</button>
+    <button id="btnZerar">🗑️ Zerar tudo</button>
+    <input type="file" id="fileImport" accept="application/json" style="display:none">
+  </div>
+
+  <div id="questoes"></div>
+
+  <div class="painel-fim">
+    <button class="btn" id="btnEnviar" disabled>Enviar simulado</button>
+    <div id="statusEnvio">Responda todas as questões para liberar o botão.</div>
+
+    <div class="cod-box" id="codBox">
+      <p style="margin:14px 0 6px; color:var(--cinza); font-size:14px;">Digite o código de liberação para ver o gabarito comentado:</p>
+      <input id="codInput" placeholder="SIM-__-__" maxlength="9">
+      <button class="btn azul" style="width:auto; margin-left:8px; display:inline-block;" id="btnGab">Ver gabarito</button>
+      <div id="statusCod" style="font-size:13px; color:var(--cinza); margin-top:8px;"></div>
+    </div>
+
+    <div class="placar" id="placar"></div>
+  </div>
+
+  <div class="nav">
+    <a class="sec" href="resumo.html">← Resumo</a>
+    <a href="folha_de_problemas.html">Folha de Problemas →</a>
+  </div>
+</div>
+
+<div class="modal-fundo" id="modalFundo">
+  <div class="modal"><p id="modalTxt"></p>
+    <div><button class="btn" style="width:auto" id="modalOk">Sim</button>
+    <button class="btn azul" style="width:auto" id="modalCancel">Não</button></div></div>
+</div>
+
+<script>
+/* ================= DADOS ================= */
+var QUESTOES = [
+  // ---------- CAP 9 ----------
+  {tipo:"mc", cap:"Cap. 9 • Volume", enun:"Qual é o volume de um cubo com aresta de 6 cm?",
+   opts:[{t:"36 cm³",ok:false},{t:"216 cm³",ok:true},{t:"18 cm³",ok:false},{t:"66 cm³",ok:false}],
+   coment:"No cubo, V = a×a×a = 6×6×6 = 216 cm³. Cuidado: não é 6×3 (=18)."},
+  {tipo:"mc", cap:"Cap. 9 • Volume", enun:"Uma caixa mede 4 cm × 5 cm × 2 cm. Qual é o volume?",
+   opts:[{t:"11 cm³",ok:false},{t:"20 cm³",ok:false},{t:"40 cm³",ok:true},{t:"80 cm³",ok:false}],
+   coment:"Paralelepípedo: V = comprimento × largura × altura = 4×5×2 = 40 cm³."},
+  {tipo:"mc", cap:"Cap. 9 • Volume", enun:"Um cubo tem volume de 64 cm³. Quanto mede cada aresta?",
+   opts:[{t:"8 cm",ok:false},{t:"4 cm",ok:true},{t:"16 cm",ok:false},{t:"32 cm",ok:false}],
+   coment:"Procuramos o número que, multiplicado por ele mesmo 3 vezes, dá 64: 4×4×4 = 64. Aresta = 4 cm."},
+  {tipo:"mc", cap:"Cap. 9 • Volume", enun:"Uma piscina em formato de caixa tem 10 m × 4 m × 2 m. Quantos litros de água cabem nela?",
+   opts:[{t:"80 L",ok:false},{t:"8000 L",ok:false},{t:"80 000 L",ok:true},{t:"800 L",ok:false}],
+   coment:"Volume = 10×4×2 = 80 m³. Como 1 m³ = 1000 L, então 80 m³ = 80 000 L."},
+  {tipo:"mc", cap:"Cap. 9 • Volume", enun:"Um aquário tem 2 m × 1 m × 0,5 m. Qual é o volume, em litros?",
+   opts:[{t:"1000 L",ok:true},{t:"100 L",ok:false},{t:"10 L",ok:false},{t:"3500 L",ok:false}],
+   coment:"V = 2×1×0,5 = 1 m³. E 1 m³ = 1000 L."},
+  {tipo:"mc", cap:"Cap. 9 • Volume", enun:"7 m³ equivalem a quantos litros?",
+   opts:[{t:"70 L",ok:false},{t:"700 L",ok:false},{t:"7000 L",ok:true},{t:"7 L",ok:false}],
+   coment:"Cada m³ vale 1000 L. Logo 7 × 1000 = 7000 L."},
+  {tipo:"mc", cap:"Cap. 9 • Volume", enun:"Uma caixa d'água tem capacidade de 2000 L. Isso equivale a quantos metros cúbicos?",
+   opts:[{t:"20 m³",ok:false},{t:"2 m³",ok:true},{t:"200 m³",ok:false},{t:"0,2 m³",ok:false}],
+   coment:"Como 1000 L = 1 m³, dividimos: 2000 ÷ 1000 = 2 m³."},
+  {tipo:"mc", cap:"Cap. 9 • Volume", enun:"Um reservatório cúbico tem 10 dm de aresta. Qual é o seu volume, em litros?",
+   opts:[{t:"100 L",ok:false},{t:"1000 L",ok:true},{t:"30 L",ok:false},{t:"10 L",ok:false}],
+   coment:"V = 10×10×10 = 1000 dm³. Como 1 dm³ = 1 L, são 1000 L."},
+
+  // ---------- CAP 10 ----------
+  {tipo:"mc", cap:"Cap. 10 • Expressões", enun:"Na expressão −3xy, qual é o coeficiente?",
+   opts:[{t:"3",ok:false},{t:"−3",ok:true},{t:"xy",ok:false},{t:"−3xy",ok:false}],
+   coment:"O coeficiente é o número que multiplica as letras, incluindo o sinal: −3."},
+  {tipo:"mc", cap:"Cap. 10 • Expressões", enun:"Na expressão 12abc, qual é a parte literal?",
+   opts:[{t:"12",ok:false},{t:"abc",ok:true},{t:"12abc",ok:false},{t:"a",ok:false}],
+   coment:"A parte literal é o conjunto das letras: abc. O 12 é o coeficiente."},
+  {tipo:"mc", cap:"Cap. 10 • Expressões", enun:'Como se escreve "o triplo de um número x, diminuído de 5"?',
+   opts:[{t:"3x − 5",ok:true},{t:"3 − 5x",ok:false},{t:"x³ − 5",ok:false},{t:"5 − 3x",ok:false}],
+   coment:"Triplo de x = 3x; diminuído de 5 = − 5. Fica 3x − 5."},
+  {tipo:"mc", cap:"Cap. 10 • Expressões", enun:"Qual é o valor numérico de 4x − 2 quando x = 3?",
+   opts:[{t:"10",ok:true},{t:"14",ok:false},{t:"6",ok:false},{t:"12",ok:false}],
+   coment:"Trocamos x por 3: 4×3 − 2 = 12 − 2 = 10."},
+  {tipo:"mc", cap:"Cap. 10 • Expressões", enun:"Qual é o valor numérico de x² + 1 quando x = 5?",
+   opts:[{t:"11",ok:false},{t:"26",ok:true},{t:"16",ok:false},{t:"51",ok:false}],
+   coment:"x² = 5×5 = 25 (não 5×2). Depois 25 + 1 = 26."},
+  {tipo:"mc", cap:"Cap. 10 • Expressões", enun:"Reduza os termos semelhantes: 10x − 4x + x",
+   opts:[{t:"6x",ok:false},{t:"7x",ok:true},{t:"5x",ok:false},{t:"7x²",ok:false}],
+   coment:"Somamos os coeficientes: 10 − 4 + 1 = 7. A parte literal continua x → 7x."},
+  {tipo:"mc", cap:"Cap. 10 • Expressões", enun:"Reduza: 3a + 2b + 5a − b",
+   opts:[{t:"9ab",ok:false},{t:"8a + b",ok:true},{t:"10ab",ok:false},{t:"8ab",ok:false}],
+   coment:"Juntamos os semelhantes: (3a+5a) + (2b−b) = 8a + b. Não se mistura a com b."},
+  {tipo:"mc", cap:"Cap. 10 • Expressões", enun:"Qual é o valor numérico de 2x + 3y quando x = 1 e y = 2?",
+   opts:[{t:"8",ok:true},{t:"7",ok:false},{t:"5",ok:false},{t:"12",ok:false}],
+   coment:"2×1 + 3×2 = 2 + 6 = 8."},
+
+  // ---------- CAP 12 ----------
+  {tipo:"mc", cap:"Cap. 12 • Equações", enun:"Resolva a equação: x + 12 = 20",
+   opts:[{t:"x = 8",ok:true},{t:"x = 32",ok:false},{t:"x = 12",ok:false},{t:"x = 240",ok:false}],
+   coment:"Operação inversa da soma: x = 20 − 12 = 8."},
+  {tipo:"mc", cap:"Cap. 12 • Equações", enun:"Resolva a equação: 4x = 36",
+   opts:[{t:"x = 9",ok:true},{t:"x = 32",ok:false},{t:"x = 40",ok:false},{t:"x = 144",ok:false}],
+   coment:"Operação inversa da multiplicação: x = 36 ÷ 4 = 9."},
+  {tipo:"mc", cap:"Cap. 12 • Equações", enun:"Resolva a equação: 2x − 7 = 9",
+   opts:[{t:"x = 8",ok:true},{t:"x = 1",ok:false},{t:"x = 16",ok:false},{t:"x = 2",ok:false}],
+   coment:"Passa o 7: 2x = 9 + 7 = 16. Depois x = 16 ÷ 2 = 8."},
+  {tipo:"mc", cap:"Cap. 12 • Equações", enun:"Resolva a equação: 3x + 5 = 2x + 9",
+   opts:[{t:"x = 4",ok:true},{t:"x = 14",ok:false},{t:"x = 2",ok:false},{t:"x = 5",ok:false}],
+   coment:"Junta as letras e os números: 3x − 2x = 9 − 5 → x = 4."},
+  {tipo:"mc", cap:"Cap. 12 • Equações", enun:"Um número somado ao seu triplo dá 40. Que número é esse?",
+   opts:[{t:"10",ok:true},{t:"13",ok:false},{t:"8",ok:false},{t:"20",ok:false}],
+   coment:"x + 3x = 40 → 4x = 40 → x = 10."},
+  {tipo:"mc", cap:"Cap. 12 • Equações", enun:"O dobro de um número menos 6 é igual a 10. Qual é o número?",
+   opts:[{t:"8",ok:true},{t:"2",ok:false},{t:"16",ok:false},{t:"5",ok:false}],
+   coment:"2x − 6 = 10 → 2x = 16 → x = 8."},
+
+  // ---------- SOMATÓRIO (2) ----------
+  {tipo:"som", cap:"Cap. 9 e 10", enun:"Marque as afirmativas CORRETAS e some os números. Some os valores das que estiverem certas:",
+   afs:[
+     {v:1,  t:"O volume de um cubo de aresta 2 cm é 8 cm³.", ok:true},
+     {v:2,  t:"1 m³ equivale a 100 L.", ok:false},
+     {v:4,  t:"O volume de uma caixa 3 × 3 × 3 é 27.", ok:true},
+     {v:8,  t:"Área e volume são a mesma coisa.", ok:false},
+     {v:16, t:"1 dm³ equivale a 1 L.", ok:true}
+   ],
+   coment:"Corretas: 01 (2³=8), 04 (3×3×3=27) e 16 (1 dm³ = 1 L). Soma = 01+04+16 = 21. Erradas: 02 (1 m³ = 1000 L) e 08 (área ≠ volume)."},
+  {tipo:"som", cap:"Cap. 10 e 12", enun:"Marque as afirmativas CORRETAS e some os números:",
+   afs:[
+     {v:1,  t:"Em 6x, o coeficiente é 6.", ok:true},
+     {v:2,  t:"x² significa x + x.", ok:false},
+     {v:4,  t:"2x + 3x = 5x.", ok:true},
+     {v:8,  t:"Numa equação do 1º grau, o expoente da incógnita é 1.", ok:true},
+     {v:16, t:"O conjunto vazio pode ser escrito como S = {0}.", ok:false}
+   ],
+   coment:"Corretas: 01, 04 e 08. Soma = 01+04+08 = 13. Erradas: 02 (x² = x×x) e 16 (o vazio é S = { } ou S = ∅, nunca {0})."},
+
+  // ---------- NÚMEROS ROMANOS (3) ----------
+  {tipo:"rom", cap:"Cap. 9 • Volume", enun:"Analise as afirmativas:<br>I. O volume do cubo é aresta × aresta × aresta.<br>II. 1 m³ = 1000 L.<br>III. O volume do paralelepípedo é comprimento + largura + altura.",
+   opts:[{t:"Apenas I",ok:false},{t:"Apenas I e II",ok:true},{t:"Apenas II e III",ok:false},{t:"I, II e III",ok:false}],
+   coment:"I e II estão corretas. III está errada: o volume da caixa é multiplicação (× × ×), não soma."},
+  {tipo:"rom", cap:"Cap. 10 • Expressões", enun:"Analise as afirmativas:<br>I. 3x e 5y são termos semelhantes.<br>II. O coeficiente de 8m é 8.<br>III. O valor numérico de 2x, para x = 4, é 8.",
+   opts:[{t:"Apenas I e II",ok:false},{t:"Apenas II e III",ok:true},{t:"Apenas I e III",ok:false},{t:"I, II e III",ok:false}],
+   coment:"II e III corretas. I é falsa: 3x e 5y têm partes literais diferentes (x e y), logo NÃO são semelhantes."},
+  {tipo:"rom", cap:"Cap. 12 • Equações", enun:"Analise as afirmativas:<br>I. A solução de x + 5 = 9 é x = 4.<br>II. Na equação 2x = 10, x = 5.<br>III. A solução de 3x = 12 é x = 36.",
+   opts:[{t:"Apenas I e II",ok:true},{t:"Apenas I e III",ok:false},{t:"Apenas III",ok:false},{t:"I, II e III",ok:false}],
+   coment:"I e II corretas. III é falsa: 3x = 12 → x = 12 ÷ 3 = 4 (não 36)."},
+
+  // ---------- DISCURSIVA (1) ----------
+  {tipo:"disc", cap:"Cap. 9 • Volume", enun:"Mariana tem uma piscina em formato de caixa (paralelepípedo) com 8 m de comprimento, 4 m de largura e 2 m de profundidade. <b>(a)</b> Qual é o volume da piscina, em m³? <b>(b)</b> Quantos litros de água cabem nela? <b>Mostre os cálculos.</b>",
+   modelo:"(a) V = comprimento × largura × altura = 8 × 4 × 2 = 64 m³. (b) Como 1 m³ = 1000 L, então 64 m³ = 64 × 1000 = 64 000 L."}
+];
+
+var TOTAL_OBJ = 27; // 22 MC + 2 som + 3 rom
+
+/* ================= ESTADO / SALVAMENTO ================= */
+var CHAVE="mat7_prova1009_simulado_v2";
+var memoria={};
+var estado = { ordem:null, resp:{}, enviado:false, acertos:0, codigo:null, gabarito:false, parcial:false, respondidas:0 };
+
+function ler(){ try{var s=localStorage.getItem(CHAVE);return s?JSON.parse(s):null;}catch(e){return memoria[CHAVE]?JSON.parse(memoria[CHAVE]):null;} }
+function salvar(){ estado.data=new Date().toLocaleString('pt-BR'); var t=JSON.stringify(estado);
+  try{localStorage.setItem(CHAVE,t);}catch(e){memoria[CHAVE]=t;} infoSalvo(); }
+function infoSalvo(){ document.getElementById('infoSalvo').textContent = estado.data? ("💾 Último salvamento: "+estado.data) : "Suas respostas são salvas automaticamente neste computador."; }
+
+/* embaralhar alternativas — ordem fixa salva; correta rastreada pelo conteúdo (flag ok) */
+function embaralhar(){
+  estado.ordem = {};
+  QUESTOES.forEach(function(q, i){
+    if(q.tipo==="mc" || q.tipo==="rom"){
+      var idxs = q.opts.map(function(_,k){return k;});
+      for(var j=idxs.length-1;j>0;j--){ var r=Math.floor(Math.random()*(j+1)); var tmp=idxs[j]; idxs[j]=idxs[r]; idxs[r]=tmp; }
+      estado.ordem[i]=idxs;
+    }
+  });
+}
+
+/* letras do código: 2 letras SEM I e O */
+function letras2(){ var L="ABCDEFGHJKLMNPQRSTUVWXYZ"; return L[Math.floor(Math.random()*L.length)]+L[Math.floor(Math.random()*L.length)]; }
+
+/* ================= RENDER ================= */
+var cont=document.getElementById('questoes');
+function render(){
+  cont.innerHTML="";
+  QUESTOES.forEach(function(q,i){
+    var div=document.createElement('div'); div.className="q"; div.id="q"+i;
+    var badge = q.tipo==="mc"?'<span class="badge mc">Múltipla escolha</span>':
+                q.tipo==="som"?'<span class="badge som">Somatório</span>':
+                q.tipo==="rom"?'<span class="badge rom">Afirmativas I, II, III</span>':
+                '<span class="badge disc">Discursiva</span>';
+    var pts = q.tipo==="disc"?"(1,5)":"(0,5)";
+    var html='<div class="cab"><span class="n">'+(i+1)+'</span>'+badge+'<span class="badge cap">'+q.cap+'</span><span class="pts">'+pts+'</span></div>';
+    html+='<p class="enun">'+q.enun+'</p>';
+
+    if(q.tipo==="mc" || q.tipo==="rom"){
+      var ordem = estado.ordem[i];
+      html+='<ul class="alts">';
+      ordem.forEach(function(optIdx, pos){
+        var letra="abcde"[pos];
+        html+='<li><label data-opt="'+optIdx+'"><input type="radio" name="q'+i+'" value="'+optIdx+'"><span><b>'+letra+')</b> '+q.opts[optIdx].t+'</span></label></li>';
+      });
+      html+='</ul>';
+      html+='<div class="coment" id="c'+i+'"></div>';
+    } else if(q.tipo==="som"){
+      html+='<ul class="alts">';
+      q.afs.forEach(function(af,ai){
+        var vv=("0"+af.v).slice(-2);
+        html+='<li><label data-v="'+af.v+'"><input type="checkbox" name="q'+i+'" value="'+af.v+'"><span><b>'+vv+')</b> '+af.t+'</span></label></li>';
+      });
+      html+='</ul><div class="som-somatorio">Marque as corretas. Sua soma: <b id="soma'+i+'">0</b></div>';
+      html+='<div class="coment" id="c'+i+'"></div>';
+    } else { // disc
+      html+='<textarea name="q'+i+'" placeholder="Escreva sua resolução aqui, mostrando as contas..."></textarea>';
+      html+='<div class="modelo" id="c'+i+'"></div>';
+    }
+    div.innerHTML=html;
+    cont.appendChild(div);
+  });
+
+  // listeners
+  QUESTOES.forEach(function(q,i){
+    if(q.tipo==="mc"||q.tipo==="rom"){
+      document.querySelectorAll('input[name="q'+i+'"]').forEach(function(inp){
+        inp.addEventListener('change', function(){ estado.resp[i]=parseInt(inp.value); salvar(); checarBotao(); });
+      });
+    } else if(q.tipo==="som"){
+      document.querySelectorAll('input[name="q'+i+'"]').forEach(function(inp){
+        inp.addEventListener('change', function(){
+          var arr=[]; document.querySelectorAll('input[name="q'+i+'"]:checked').forEach(function(c){arr.push(parseInt(c.value));});
+          estado.resp[i]=arr; atualizarSoma(i); salvar(); checarBotao();
+        });
+      });
+    } else {
+      var ta=document.querySelector('textarea[name="q'+i+'"]');
+      ta.addEventListener('input', function(){ estado.resp[i]=ta.value; salvar(); checarBotao(); });
+    }
+  });
+
+  restaurarRespostas();
+  if(estado.enviado){ aplicarEnvio(); if(estado.gabarito) revelarGabarito(); }
+  checarBotao();
+}
+
+function atualizarSoma(i){
+  var arr=estado.resp[i]||[]; var s=0; arr.forEach(function(v){s+=v;});
+  var el=document.getElementById('soma'+i); if(el) el.textContent=s;
+}
+
+function restaurarRespostas(){
+  QUESTOES.forEach(function(q,i){
+    var r=estado.resp[i]; if(r===undefined||r===null) return;
+    if(q.tipo==="mc"||q.tipo==="rom"){
+      var inp=document.querySelector('input[name="q'+i+'"][value="'+r+'"]'); if(inp) inp.checked=true;
+    } else if(q.tipo==="som"){
+      (r||[]).forEach(function(v){ var c=document.querySelector('input[name="q'+i+'"][value="'+v+'"]'); if(c) c.checked=true; });
+      atualizarSoma(i);
+    } else {
+      var ta=document.querySelector('textarea[name="q'+i+'"]'); if(ta) ta.value=r;
+    }
+  });
+}
+
+function tudoRespondido(){
+  for(var i=0;i<QUESTOES.length;i++){
+    var q=QUESTOES[i]; var r=estado.resp[i];
+    if(q.tipo==="mc"||q.tipo==="rom"){ if(r===undefined||r===null) return false; }
+    else if(q.tipo==="som"){ if(!r || r.length===0) return false; }
+    else { if(!r || (""+r).trim().length<5) return false; }
+  }
+  return true;
+}
+
+function checarBotao(){
+  var btn=document.getElementById('btnEnviar');
+  if(estado.enviado){ btn.disabled=true; btn.textContent="Simulado enviado ✔"; document.getElementById('statusEnvio').style.display="none"; return; }
+  var ok=tudoRespondido();
+  btn.disabled=!ok;
+  var faltam=0; for(var i=0;i<QUESTOES.length;i++){var q=QUESTOES[i],r=estado.resp[i];
+    if(q.tipo==="mc"||q.tipo==="rom"){if(r===undefined||r===null)faltam++;}
+    else if(q.tipo==="som"){if(!r||r.length===0)faltam++;}
+    else{if(!r||(""+r).trim().length<5)faltam++;}}
+  document.getElementById('statusEnvio').textContent = ok? 'Tudo respondido! Pode enviar.' : ('Faltam '+faltam+' questão(ões) para responder.');
+}
+
+/* ================= ENVIO ================= */
+function contarAcertos(){
+  var acertos=0, respondidas=0;
+  QUESTOES.forEach(function(q,i){
+    var r=estado.resp[i];
+    if(q.tipo==="mc"||q.tipo==="rom"){
+      if(r!==undefined && r!==null){ respondidas++; if(q.opts[r] && q.opts[r].ok) acertos++; }
+    }
+    else if(q.tipo==="som"){
+      if(r && r.length){
+        respondidas++;
+        var corretos=q.afs.filter(function(a){return a.ok;}).map(function(a){return a.v;}).sort(function(a,b){return a-b;});
+        var marc=(r||[]).slice().sort(function(a,b){return a-b;});
+        if(JSON.stringify(corretos)===JSON.stringify(marc)) acertos++;
+      }
+    }
+    // discursiva não entra no código (corrigida pelo responsável)
+  });
+  return {acertos:acertos, respondidas:respondidas};
+}
+
+function enviar(parcial){
+  if(estado.enviado) return;
+  var c = contarAcertos();
+  estado.acertos=c.acertos;
+  estado.respondidas=c.respondidas;
+  estado.parcial=!!parcial;
+  estado.codigo="SIM-"+("0"+c.acertos).slice(-2)+"-"+letras2();
+  estado.enviado=true;
+  salvar();
+  aplicarEnvio();
+}
+
+document.getElementById('btnEnviar').addEventListener('click', function(){
+  if(!tudoRespondido() || estado.enviado) return;
+  enviar(false);
+  document.getElementById('codigoTopo').scrollIntoView({behavior:'smooth',block:'center'});
+});
+
+function aplicarEnvio(){
+  document.getElementById('codMostra').textContent=estado.codigo;
+  document.getElementById('acertosMostra').textContent=estado.acertos;
+  document.getElementById('codigoTopo').classList.add('on');
+  document.getElementById('codBox').classList.add('on');
+  document.getElementById('parcialAviso').style.display = estado.parcial? 'block':'none';
+  // travar entradas
+  document.querySelectorAll('#questoes input, #questoes textarea').forEach(function(el){ el.disabled=true; });
+  var btn=document.getElementById('btnEnviar'); btn.disabled=true; btn.textContent="Simulado enviado ✔";
+  document.getElementById('statusEnvio').style.display="none";
+}
+
+/* ================= GABARITO ================= */
+document.getElementById('btnGab').addEventListener('click', function(){
+  var v=(document.getElementById('codInput').value||"").trim().toUpperCase();
+  if(v===estado.codigo){ estado.gabarito=true; salvar(); revelarGabarito();
+    document.getElementById('statusCod').textContent="Gabarito liberado! ✔"; }
+  else{ document.getElementById('statusCod').textContent="Código incorreto. Confira o código que apareceu no topo da página."; }
+});
+
+function revelarGabarito(){
+  document.getElementById('codInput').value=estado.codigo;
+  QUESTOES.forEach(function(q,i){
+    var r=estado.resp[i];
+    var box=document.getElementById('q'+i);
+    if(q.tipo==="mc"||q.tipo==="rom"){
+      box.querySelectorAll('label').forEach(function(lab){
+        var opt=parseInt(lab.getAttribute('data-opt'));
+        if(q.opts[opt].ok){ lab.classList.add('certa');
+          if(!lab.querySelector('.marca')){var t=document.createElement('span');t.className='marca ok';t.textContent='Correta';lab.appendChild(t);} }
+        else if(opt===r){ lab.classList.add('errada');
+          if(!lab.querySelector('.marca')){var t2=document.createElement('span');t2.className='marca x';t2.textContent='Você marcou';lab.appendChild(t2);} }
+      });
+      var c=document.getElementById('c'+i); c.className="coment on"; c.innerHTML="<b>Explicação:</b> "+q.coment;
+    } else if(q.tipo==="som"){
+      var corretos=q.afs.filter(function(a){return a.ok;}).map(function(a){return a.v;});
+      box.querySelectorAll('label').forEach(function(lab){
+        var v=parseInt(lab.getAttribute('data-v'));
+        var marcada=(r||[]).indexOf(v)>=0;
+        if(corretos.indexOf(v)>=0){ lab.classList.add('certa'); }
+        else if(marcada){ lab.classList.add('errada'); }
+      });
+      var c2=document.getElementById('c'+i); c2.className="coment on"; c2.innerHTML="<b>Explicação:</b> "+q.coment;
+    } else {
+      var c3=document.getElementById('c'+i); c3.className="modelo on"; c3.innerHTML="<b>Resposta modelo (para o responsável corrigir):</b> "+q.modelo;
+    }
+  });
+  var placar=document.getElementById('placar'); placar.className="placar on";
+  placar.innerHTML="Você acertou <b>"+estado.acertos+" de 27</b> questões objetivas"+(estado.parcial? " (tentativa encerrada antes do fim — "+estado.respondidas+" respondidas)":"")+".<br><small style='font-size:14px;color:var(--cinza)'>A questão discursiva (nº 28) é corrigida pelo responsável com a resposta modelo.</small>";
+}
+
+/* ====== RELÓGIO DE ESTUDO (regra 2026-09-07) ====== */
+var RELOGIO = (function(){
+  var KEY_T = CHAVE + "_tempo";
+  var SESSAO = 45*60, TRAVA = 5*60, INATIVO = 3*60;
+  var memT = {};
+  function lerT(){ try{ var s=localStorage.getItem(KEY_T); return s?JSON.parse(s):null; }catch(e){ return memT.v? JSON.parse(memT.v):null; } }
+  var st = lerT() || { total:0, ativo:0, sessoes:[] };
+  if(!st.sessoes) st.sessoes=[];
+  var ligado=false, inativo=false, trava=false;
+  var sessAtivo=0, travaResta=0, ultAtiv=Date.now(), tick=null, salvaCada=0;
+
+  function gravarT(){ var t=JSON.stringify(st); try{ localStorage.setItem(KEY_T, t); }catch(e){ memT.v=t; } }
+  function fmt(s){ s=Math.max(0,Math.floor(s)); return Math.floor(s/60)+":"+("0"+(s%60)).slice(-2); }
+  function mostra(id,on){ var e=document.getElementById(id); if(e) e.classList.toggle('on', !!on); }
+  function renderRel(){
+    var t=document.getElementById('relTempo'); if(t) t.textContent=fmt(st.ativo);
+    var i=document.getElementById('relInfo');
+    if(i) i.textContent = trava? "pausa obrigatória — descanse!" : inativo? "pausado (toque para continuar)" : ligado? ("sessão: faltam "+fmt(SESSAO-sessAtivo)) : 'clique em "Começar a estudar"';
+  }
+  function atividade(){
+    if(!ligado || trava) return;
+    ultAtiv = Date.now();
+    if(inativo){ inativo=false; mostra('relPausa', false); renderRel(); }
+  }
+  function passo(){
+    if(!ligado) return;
+    st.total++;
+    if(trava){
+      travaResta--;
+      var e=document.getElementById('relTravaConta'); if(e) e.textContent=fmt(travaResta);
+      if(travaResta<=0){ trava=false; sessAtivo=0; mostra('relTrava', false); novaSessao(); }
+    } else if(!inativo){
+      if(Date.now()-ultAtiv > INATIVO*1000){ inativo=true; mostra('relPausa', true); }
+      else{
+        st.ativo++; sessAtivo++;
+        if(sessAtivo>=SESSAO){ trava=true; travaResta=TRAVA; mostra('relTrava', true); }
+      }
+    }
+    salvaCada++; if(salvaCada>=5){ salvaCada=0; gravarT(); }
+    renderRel();
+  }
+  function novaSessao(){ st.sessoes.push({inicio:new Date().toISOString()}); gravarT(); }
+  function fechaSessao(botao){
+    var s=st.sessoes[st.sessoes.length-1];
+    if(s && !s.fim){ s.fim=new Date().toISOString(); if(botao) s.terminadaPeloBotao=true; }
+    gravarT();
+  }
+  function comecar(){
+    ligado=true; inativo=false; ultAtiv=Date.now(); sessAtivo=0;
+    document.body.classList.remove('rel-off');
+    mostra('relInicio', false); mostra('relFim', false);
+    novaSessao();
+    if(!tick) tick=setInterval(passo, 1000);
+    renderRel();
+  }
+  ['click','keydown','scroll','input','touchstart'].forEach(function(evt){
+    document.addEventListener(evt, atividade, true);
+  });
+  window.addEventListener('beforeunload', function(){ if(ligado) fechaSessao(false); gravarT(); });
+  document.getElementById('relComecar').addEventListener('click', comecar);
+  document.getElementById('relDeNovo').addEventListener('click', function(){
+    mostra('relFim', false);
+    document.body.classList.remove('rel-off');
+    document.getElementById('codigoTopo').scrollIntoView({behavior:'smooth',block:'center'});
+  });
+  document.getElementById('relTerminar').addEventListener('click', function(){
+    if(!ligado || trava) return;
+    document.getElementById('relConfirmaTxt').textContent = estado.enviado?
+      "O relógio de estudo será encerrado e o tempo registrado. Tem certeza?" :
+      "Isso encerra o relógio E a sua tentativa do simulado: as questões em branco contam como não respondidas e o código sai com os acertos do que você respondeu. Tem certeza?";
+    mostra('relConfirma', true);
+  });
+  document.getElementById('relConfirmaNao').addEventListener('click', function(){ mostra('relConfirma', false); });
+  document.getElementById('relConfirmaSim').addEventListener('click', function(){
+    mostra('relConfirma', false);
+    ligado=false; fechaSessao(true); gravarT();
+    if(!estado.enviado){ enviar(true); }
+    var r=document.getElementById('relFimResumo');
+    if(r) r.innerHTML = "Tempo ativo: <b>"+fmt(st.ativo)+"</b> (total: "+fmt(st.total)+").<br>Seu código de liberação: <b style='font-family:Consolas,monospace'>"+estado.codigo+"</b><br>Você acertou "+estado.acertos+" de 27 questões objetivas"+(estado.parcial? " ("+estado.respondidas+" respondidas)":"")+".";
+    mostra('relFim', true);
+  });
+  renderRel();
+  return {
+    dados: function(){ return st; },
+    gravar: gravarT,
+    zerar: function(){ st={total:0,ativo:0,sessoes:[]}; try{ localStorage.removeItem(KEY_T); }catch(e){ delete memT.v; } gravarT(); renderRel(); },
+    importar: function(d){ if(d){ st=d; if(!st.sessoes)st.sessoes=[]; gravarT(); renderRel(); } },
+    _debug: function(o){
+      o=o||{};
+      if(o.restante!=null) sessAtivo = SESSAO - o.restante;
+      if(o.trava!=null){ trava=true; travaResta=o.trava; mostra('relTrava', true); }
+      if(o.inativo!=null) ultAtiv = Date.now() - o.inativo*1000;
+      renderRel();
+    }
+  };
+})();
+
+/* ================= SALVAMENTO BOTÕES ================= */
+document.getElementById('btnExport').addEventListener('click', function(){
+  var pacote = { material:"simulado", dados:estado, tempo:RELOGIO.dados() };
+  var blob=new Blob([JSON.stringify(pacote,null,2)],{type:"application/json"});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download="simulado_matematica_7ano.json"; a.click();
+});
+document.getElementById('btnImport').addEventListener('click', function(){ document.getElementById('fileImport').click(); });
+document.getElementById('fileImport').addEventListener('change', function(e){
+  var f=e.target.files[0]; if(!f) return; var rd=new FileReader();
+  rd.onload=function(){ try{
+      var d=JSON.parse(rd.result);
+      if(d && d.dados){ estado=d.dados; if(d.tempo) RELOGIO.importar(d.tempo); }
+      else{ estado=d; }
+      if(!estado.resp) estado.resp={};
+      if(!estado.ordem) embaralhar();
+      salvar(); render(); }
+    catch(err){ mostrarModalInfo("Não consegui ler esse arquivo."); } };
+  rd.readAsText(f);
+});
+var modalFundo=document.getElementById('modalFundo');
+document.getElementById('btnZerar').addEventListener('click', function(){
+  document.getElementById('modalTxt').textContent="Tem certeza que quer apagar todas as suas respostas do simulado (incluindo o tempo de estudo)?";
+  document.getElementById('modalOk').style.display="inline-block"; document.getElementById('modalCancel').textContent="Não";
+  modalFundo.classList.add('on');
+  document.getElementById('modalOk').onclick=function(){
+    estado={ ordem:null, resp:{}, enviado:false, acertos:0, codigo:null, gabarito:false, parcial:false, respondidas:0 };
+    embaralhar();
+    try{localStorage.removeItem(CHAVE);}catch(e){delete memoria[CHAVE];}
+    RELOGIO.zerar();
+    salvar(); location.reload();
+  };
+});
+document.getElementById('modalCancel').addEventListener('click', function(){ modalFundo.classList.remove('on'); });
+function mostrarModalInfo(t){ document.getElementById('modalTxt').textContent=t; document.getElementById('modalOk').style.display="none"; document.getElementById('modalCancel').textContent="Fechar"; modalFundo.classList.add('on'); }
+
+/* ================= INÍCIO ================= */
+var salvo=ler();
+if(salvo){ estado=salvo; if(!estado.resp) estado.resp={}; }
+if(!estado.ordem) embaralhar();
+render();
+infoSalvo();
+</script>
+</body>
+</html>
